@@ -9,50 +9,80 @@ var MAX_NUM_CLOSE_BUSES = 5;
 var TYPE_KEY = '0';
 var TYPE_VALUE_CLOSE_BUSES = 0;
 
+function degToRad(deg) {
+  return deg * 0.0174532925;
+}
+
 // Source: http://stackoverflow.com/a/20642344
 function geoDistance(lat1, lon1, lat2, lon2) {
     // returns the distance in km between the pair of latitude and longitudes provided in decimal degrees
     var R = 6371; // km
-    var dLat = (lat2 - lat1).toRad();
-    var dLon = (lon2 - lon1).toRad();
+    var dLat = degToRad(lat2 - lat1);
+    var dLon = degToRad(lon2 - lon1);
     var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
+                    Math.cos(degToRad(lat1)) * Math.cos(degToRad(lat2)) *
                     Math.sin(dLon / 2) * Math.sin(dLon / 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
+    console.log(JSON.stringify({
+      lat1: lat1,
+      lon1: lon1,
+      lat2: lat2,
+      lon2: lon2,
+      R: R,
+      dLat: dLat,
+      dLon: dLon,
+      a: a,
+      c: c,
+      d: d
+    }));
     return d;
 }
 
-function filterCloseBuses(allBuses, limit) {
+function filterCloseBuses(myLoc, allBuses, limit) {
   var closeBuses = [];
-  for (busInfo in allBuses) {
-    if (closeBuses.length == limit) {
-      return closeBuses;
-    }
+  for (busIndex in allBuses) {
+    var busInfo = allBuses[busIndex];
     var lat = busInfo["Latitude"];
     var lon = busInfo["Longitude"];
     var description = busInfo["Trip"]["Headsign"];
-    var distance = geoDistance(lat, lon, myLoc.lat, myLoc.long);
+    var distance = geoDistance(lat, lon, myLoc.lat, myLoc.lon);
+    console.log("'"+description+"': "+distance+" km");
     if (distance < DEFAULT_BUS_DISTANCE_LIMIT) {
       closeBuses.push({
         "description": description,
-        "distance": distance
+        "distance": Math.round(distance * 10) / 10
       });
     }
   }
+  closeBuses.sort(function(b1, b2) {
+    if (b1.distance < b2.distance) {
+      return -1;
+    } else if (b1.distance > b2.distance) {
+      return 1;
+    }
+    return 0;
+  });
+  closeBuses = closeBuses.slice(0, limit);
   return closeBuses;
 }
 
 function getClosestBuses(myLoc, limit, callback) {
   var request = new XMLHttpRequest();
-  request.open("http://realtimemap.grt.ca/Map/GetVehicles", "GET");
+  request.open("GET", "http://realtimemap.grt.ca/Map/GetVehicles");
+  request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
   request.onload = function(response) {
-    if (request.readystate == 4 && request.status == 200) {
-      var buses = JSON.parse(response);
-      var closeBuses = filterCloseBuses(buses, limit);
+    if (request.status == 200) {
+      console.log("Request success: \n"+response);
+      var buses = JSON.parse(request.responseText);
+      var closeBuses = filterCloseBuses(myLoc, buses, limit);
+      console.log("Parsed close buses: \n" + JSON.stringify(closeBuses));
       callback(closeBuses);
+    } else {
+      console.log("Error with request: " + request.statusText);
     }
-  }
+  };
+  console.log("Sending request to http://realtimemap.grt.ca/Map/GetVehicles");
   request.send();
 }
 
@@ -63,7 +93,7 @@ function getGeoLocation(onSuccess) {
     timeout: 10000
   };
   navigator.geolocation.getCurrentPosition(function(pos) {
-    let coords = pos.coords;
+    var coords = pos.coords;
     onSuccess({
       lat: coords.latitude,
       lon: coords.longitude
@@ -75,13 +105,12 @@ function locationError(err) {
   console.log('location error (' + err.code + '): ' + err.message);
 }
 
-function extendWithArray(obj, array) {
-  var firstFreeIndex = 0;
-  while (obj.hasOwnProperty("" + firstFreeIndex)) {
-    firstFreeIndex += 1;
-  }
+function extendWithArray(obj, array, startIndex) {
   for (var i = 0; i < array.length; i++) {
-    obj["" + (i + firstFreeIndex)] = array[i];
+    var key = "" + (i + startIndex);
+    var value = array[i];
+    console.log("Setting '"+key+"' to '"+JSON.stringify(value)+"'");
+    obj[key] = value;
   }
 }
 
@@ -96,7 +125,7 @@ function reportClosestBuses() {
     var msg = {
       TYPE_KEY: TYPE_VALUE_CLOSE_BUSES
     };
-    extendWithArray(msg, busStrings);
+    extendWithArray(msg, busStrings, 1);
 
     Pebble.sendAppMessage(msg,
       function () {

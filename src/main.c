@@ -10,7 +10,7 @@ static Window *s_main_window;
 static SimpleMenuLayer *s_nearby_buses_layer;
 static SimpleMenuSection s_default_menu_section = {
   .items = s_menu_items,
-  .num_items = 1,
+  .num_items = 10,
   .title = "Nearby Buses"
 };
 
@@ -37,6 +37,14 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 }
 
+static char *split_distance_and_desc(char *bus_string) {
+  while (*bus_string != ';') {
+    bus_string++;
+  }
+  *bus_string = '\0';
+  return bus_string + 1;
+}
+
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // TODO: parse bus data
     // Get the first pair
@@ -51,14 +59,15 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
         APP_LOG(APP_LOG_LEVEL_INFO, "KEY_TYPE received with value %d", (int)t->value->int32);
         break;
       default: {
-        const char *bus_string = t->value->cstring;
+        char *bus_string = t->value->cstring;
+        const char *description = split_distance_and_desc(bus_string);
         SimpleMenuItem bus_item = {
           .title = bus_string,
-          .subtitle = NULL,
+          .subtitle = description,
           .icon = NULL,
           .callback = NULL
         };
-        s_menu_items[index] = bus_item;
+        s_menu_items[t->key - 1] = bus_item;
         index += 1;
         break;
       }
