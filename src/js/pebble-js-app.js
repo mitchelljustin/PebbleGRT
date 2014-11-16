@@ -3,7 +3,11 @@
 //    lon: string,
 // }
 
-var DISTANCE_LIMIT = 20; // km
+var DEFAULT_BUS_DISTANCE_LIMIT = 20; // km
+var MAX_NUM_CLOSE_BUSES = 5;
+
+var TYPE_KEY = '0';
+var TYPE_VALUE_CLOSE_BUSES = 0;
 
 // Source: http://stackoverflow.com/a/20642344
 function geoDistance(lat1, lon1, lat2, lon2) {
@@ -29,7 +33,7 @@ function filterCloseBuses(allBuses, limit) {
     var lon = busInfo["Longitude"];
     var description = busInfo["Trip"]["Headsign"];
     var distance = geoDistance(lat, lon, myLoc.lat, myLoc.long);
-    if (distance < DISTANCE_LIMIT) {
+    if (distance < DEFAULT_BUS_DISTANCE_LIMIT) {
       closeBuses.push({
         "description": description,
         "distance": distance
@@ -52,11 +56,66 @@ function getClosestBuses(myLoc, limit, callback) {
   request.send();
 }
 
+function getGeoLocation(onSuccess) {
+  var locationOptions = {
+    enableHighAccuracy: true,
+    maximumAge: 10000,
+    timeout: 10000
+  };
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    let coords = pos.coords;
+    onSuccess({
+      lat: coords.latitude,
+      lon: coords.longitude
+    });
+  }, locationError, locationOptions);
+}
+
+function locationError(err) {
+  console.log('location error (' + err.code + '): ' + err.message);
+}
+
+function extendWithArray(obj, array) {
+  var firstFreeIndex = 0;
+  while (obj.hasOwnProperty("" + firstFreeIndex)) {
+    firstFreeIndex += 1;
+  }
+  for (var i = 0; i < array.length; i++) {
+    obj["" + (i + firstFreeIndex)] = array[i];
+  }
+}
+
+function reportClosestBuses() {
+  function closeBusesCallback(buses) {
+    var busStrings = buses.map(
+      function (bus) {
+        return bus.distance + "km;" + bus.description;
+      }
+    );
+
+    var msg = {
+      TYPE_KEY: TYPE_VALUE_CLOSE_BUSES
+    };
+    extendWithArray(msg, busStrings);
+
+    Pebble.sendAppMessage(msg,
+      function () {
+        console.log("Message sent: \n" + JSON.stringify(msg));
+      },
+      function () {
+        console.log("ERROR: could not send message: \n" + JSON.stringify(msg));
+      });
+  }
+
+  getGeoLocation(function(myLoc) {
+    getClosestBuses(myLoc, MAX_NUM_CLOSE_BUSES, closeBusesCallback);
+  });
+}
+
 Pebble.addEventListener('ready',
   function(e) {
     console.log("PebbleKit JS ready!");
-
-    getBuses();
+    reportClosestBuses();
   }
 );
 
@@ -64,6 +123,6 @@ Pebble.addEventListener('ready',
 Pebble.addEventListener('appmessage',
   function(e) {
     console.log("AppMessage received!");
-    getBuses();
+    reportClosestBuses();
   }
 );
