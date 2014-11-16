@@ -1,9 +1,15 @@
 #include <pebble.h>
 
 static Window *s_main_window;
+static SimpleMenuLayer *s_nearby_buses_layer;
 
 static void main_window_load(Window *window) {
-
+  s_nearby_buses_layer = simple_menu_layer_create 	(GRect(0,0,0
+		Window *  	window,
+		const SimpleMenuSection *  	sections,
+		int32_t  	num_sections,
+		void *  	callback_context
+	)
 }
 
 static void main_window_unload(Window *window) {
