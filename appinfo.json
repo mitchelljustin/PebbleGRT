@@ -1,32 +1,13 @@
 {
-    "appKeys": {
-        "KEY_CONDITIONS": 1,
-        "KEY_TEMPERATURE": 0
-    },
+    "appKeys": {},
     "capabilities": [
         "location"
     ],
-    "companyName": "Pebble",
-    "longName": "Pebble GRT",
+    "companyName": "Mizzl",
+    "longName": "Check real time distances to GRT buses in the Kitchener/Waterloo area!",
     "projectType": "native",
     "resources": {
-        "media": [
-            {
-                "file": "fonts/perfect-dos-vga.ttf",
-                "name": "FONT_PERFECT_DOS_48",
-                "type": "font"
-            },
-            {
-                "file": "fonts/perfect-dos-vga.ttf",
-                "name": "FONT_PERFECT_DOS_20",
-                "type": "font"
-            },
-            {
-                "file": "images/background.png",
-                "name": "IMAGE_BACKGROUND",
-                "type": "png"
-            }
-        ]
+        "media": []
     },
     "shortName": "PebbleGRT",
     "uuid": "365d1636-8e8b-47c5-991c-0fc2d759d219",

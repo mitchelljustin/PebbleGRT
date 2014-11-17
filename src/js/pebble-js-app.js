@@ -4,7 +4,7 @@
 // }
 
 var DEFAULT_BUS_DISTANCE_LIMIT = 20; // km
-var MAX_NUM_CLOSE_BUSES = 5;
+var MAX_NUM_CLOSE_BUSES = 6;
 
 var TYPE_KEY = '0';
 var TYPE_VALUE_CLOSE_BUSES = 0;
@@ -24,18 +24,6 @@ function geoDistance(lat1, lon1, lat2, lon2) {
                     Math.sin(dLon / 2) * Math.sin(dLon / 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
-    console.log(JSON.stringify({
-      lat1: lat1,
-      lon1: lon1,
-      lat2: lat2,
-      lon2: lon2,
-      R: R,
-      dLat: dLat,
-      dLon: dLon,
-      a: a,
-      c: c,
-      d: d
-    }));
     return d;
 }
 
@@ -47,7 +35,6 @@ function filterCloseBuses(myLoc, allBuses, limit) {
     var lon = busInfo["Longitude"];
     var description = busInfo["Trip"]["Headsign"];
     var distance = geoDistance(lat, lon, myLoc.lat, myLoc.lon);
-    console.log("'"+description+"': "+distance+" km");
     if (distance < DEFAULT_BUS_DISTANCE_LIMIT) {
       closeBuses.push({
         "description": description,
@@ -73,7 +60,6 @@ function getClosestBuses(myLoc, limit, callback) {
   request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
   request.onload = function(response) {
     if (request.status == 200) {
-      console.log("Request success: \n"+response);
       var buses = JSON.parse(request.responseText);
       var closeBuses = filterCloseBuses(myLoc, buses, limit);
       console.log("Parsed close buses: \n" + JSON.stringify(closeBuses));

@@ -1,6 +1,6 @@
 #include <pebble.h>
 
-#define MAX_NUM_MENU_ITEMS 10
+#define MAX_NUM_MENU_ITEMS 6
 
 static SimpleMenuItem s_menu_items[MAX_NUM_MENU_ITEMS];  
 
@@ -10,7 +10,7 @@ static Window *s_main_window;
 static SimpleMenuLayer *s_nearby_buses_layer;
 static SimpleMenuSection s_default_menu_section = {
   .items = s_menu_items,
-  .num_items = 10,
+  .num_items = MAX_NUM_MENU_ITEMS,
   .title = "Nearby Buses"
 };
 
@@ -34,7 +34,18 @@ static void main_window_unload(Window *window) {
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
+  
+  if(tick_time->tm_sec % 15 == 0) {
+    // Begin dictionary
+    DictionaryIterator *iter;
+    app_message_outbox_begin(&iter);
 
+    // Add a key-value pair
+    dict_write_uint8(iter, 0, 0);
+
+    // Send the message!
+    app_message_outbox_send();
+  }
 }
 
 static char *split_distance_and_desc(char *bus_string) {
@@ -50,7 +61,6 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     // Get the first pair
   Tuple *t = dict_read_first(iterator);
 
-  int index = 0;
   // Process all pairs present
   while(t != NULL) {
     // Process this pair's key
@@ -59,7 +69,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
         APP_LOG(APP_LOG_LEVEL_INFO, "KEY_TYPE received with value %d", (int)t->value->int32);
         break;
       default: {
+        int index = t->key - 1;
         char *bus_string = t->value->cstring;
+        APP_LOG(APP_LOG_LEVEL_INFO, "'%lu' received with value %s", t->key, bus_string);
         const char *description = split_distance_and_desc(bus_string);
         SimpleMenuItem bus_item = {
           .title = bus_string,
@@ -67,8 +79,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
           .icon = NULL,
           .callback = NULL
         };
-        s_menu_items[t->key - 1] = bus_item;
-        index += 1;
+        s_menu_items[index] = bus_item;
         break;
       }
     }
@@ -77,7 +88,6 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     t = dict_read_next(iterator);
   }
   
-  s_default_menu_section.num_items = index + 1;
   layer_mark_dirty(simple_menu_layer_get_layer(s_nearby_buses_layer));
 }
 
@@ -107,7 +117,7 @@ static void init() {
   window_stack_push(s_main_window, true);
 
   // Register with TickTimerService
-  tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+  tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
 
   // Register callbacks
   app_message_register_inbox_received(inbox_received_callback);
