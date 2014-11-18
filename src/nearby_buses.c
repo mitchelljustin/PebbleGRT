@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include "message_types.h"
+#include "pgbus.h"
 
 #define MAX_NUM_NEARBY_BUSES 5
 static const int REFRESH_INTERVAL = 27;
@@ -68,9 +69,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       default: {
         APP_LOG(APP_LOG_LEVEL_INFO, "'%lu' received with value %s", t->key, t->value->cstring);
         int index = t->key - 1;
-        struct PGBus *bus = &s_buses[index];
+        struct PGBus **bus = &s_buses[index];
         if (*bus != NULL) {
-          pgbus_destroy(bus);
+          pgbus_destroy(*bus);
         }
         *bus = pgbus_parse_from_string(t->value->cstring);
         SimpleMenuItem bus_item = {

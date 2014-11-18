@@ -9,6 +9,8 @@ static Window *s_window;
 static const char *s_vehicleId;
 static const char *s_tripId;
 
+static char s_delay_subtitle[80];
+
 static SimpleMenuItem s_menu_items[NUM_UPCOMING_STOPS];
 
 static SimpleMenuSection s_default_menu_section = {
@@ -64,14 +66,6 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   }
 }
 
-static char *split_distance_and_desc(char *bus_string) {
-  while (*bus_string != ';') {
-    bus_string++;
-  }
-  *bus_string = '\0';
-  return bus_string + 1;
-}
-
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   Tuple *t = dict_read_first(iterator);
 
@@ -80,15 +74,15 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       case PGKeyMessageType:
         APP_LOG(APP_LOG_LEVEL_INFO, "PGKeyMessageType received with value %d", (int)t->value->int32);
         break;
-      case PGKeyBusDetailDelay:
+      case PGKeyBusDetailDelay: {
         SimpleMenuItem *delay_item = &s_menu_items[0];
-        if (delay_item->subtitle != NULL) {
-          free(delay_item->subtitle);
+        if (delay_item->subtitle == NULL) {
+          delay_item->title = "Delay";
+          delay_item->subtitle = s_delay_subtitle;
         }
-        delay_item->title = "Delay";
-        delay_item->subtitle = malloc(80 * sizeof(char));
-        strcpy(delay_item->subtitle, t->value->cstring);
+        strcpy(s_delay_subtitle, t->value->cstring);
         break;
+      }
       default: {
       }
     }
