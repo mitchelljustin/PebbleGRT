@@ -17,11 +17,9 @@ function geoDistance(lat1, lon1, lat2, lon2) {
 }
 
 function extendWithArray(obj, array, startIndex) {
-  console.log("Extending "+JSON.stringify(obj)+" with "+array+" starting at "+startIndex);
   for (var i = 0; i < array.length; i++) {
     var key = "" + (i + startIndex);
     var value = array[i];
-    console.log("Setting '"+key+"' to '"+JSON.stringify(value)+"'");
     obj[key] = value;
   }
 }

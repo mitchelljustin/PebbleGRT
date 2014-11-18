@@ -29,12 +29,20 @@ function locationError(err) {
 }
 
 function encodeBus(bus) {
-  return bus.distance + "km;" + bus.description;
+  return [
+    bus.distance + "km",
+    bus.description
+  ].join(";");
 }
 
 function reportClosestBuses() {
   function closeBusesCallback(buses) {
     var busStrings = buses.map(encodeBus);
+
+    console.log("Sending to Pebble:");
+    for (index in busStrings) {
+      console.log("["+index + "] \""+ busStrings[index]+"\"");
+    }
 
     var msg = {
       TYPE_KEY: TYPE_VALUE_CLOSE_BUSES
@@ -43,7 +51,7 @@ function reportClosestBuses() {
 
     Pebble.sendAppMessage(msg,
       function () {
-        console.log("Message sent: \n" + JSON.stringify(msg));
+        console.log("Message sent.");
       },
       function () {
         console.log("ERROR: could not send message: \n" + JSON.stringify(msg));
