@@ -1,7 +1,9 @@
 #include <pebble.h>
 
-#define MAX_NUM_MENU_ITEMS 6
+#define MAX_NUM_MENU_ITEMS 7
 
+static const int REFRESH_INTERVAL = 27;  
+  
 static SimpleMenuItem s_menu_items[MAX_NUM_MENU_ITEMS];  
 
 #define KEY_TYPE 0
@@ -35,7 +37,7 @@ static void main_window_unload(Window *window) {
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   
-  if(tick_time->tm_sec % 15 == 0) {
+  if(tick_time->tm_sec % REFRESH_INTERVAL == 0) {
     // Begin dictionary
     DictionaryIterator *iter;
     app_message_outbox_begin(&iter);
