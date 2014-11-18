@@ -56,7 +56,9 @@ function locationError(err) {
 function encodeBus(bus) {
   return [
     bus.distance + "km",
-    bus.description
+    bus.description,
+    bus.tripId,
+    bus.vehicleId
   ].join(";");
 }
 
