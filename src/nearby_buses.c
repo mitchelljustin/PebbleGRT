@@ -1,4 +1,5 @@
 #include <pebble.h>
+#include "message_types.h"
 
 #define MAX_NUM_MENU_ITEMS 7
 static const int REFRESH_INTERVAL = 27;
@@ -7,13 +8,25 @@ static Window *s_window;
 
 static SimpleMenuItem s_menu_items[MAX_NUM_MENU_ITEMS];
 
-static SimpleMenuSection s_default_menu_section = (SimpleMenuSection) {
+static SimpleMenuSection s_default_menu_section = {
   .items = s_menu_items,
   .num_items = MAX_NUM_MENU_ITEMS,
   .title = "Nearby Buses"
 };
 
 static SimpleMenuLayer *s_nearby_buses_layer;
+
+static void send_report_nearby_buses_msg() {
+  // Begin dictionary
+  DictionaryIterator *iter;
+  app_message_outbox_begin(&iter);
+
+  // Add a key-value pair
+  dict_write_uint8(iter, 0, (uint8_t) PBMessageTypeReportNearbyBuses);
+
+  // Send the message!
+  app_message_outbox_send();
+}
 
 static void window_load(Window *window) {
   s_menu_items[0] = (SimpleMenuItem) {
@@ -28,26 +41,21 @@ static void window_load(Window *window) {
                                                   1,
                                                   NULL);
   layer_add_child(window_layer, simple_menu_layer_get_layer(s_nearby_buses_layer));
+  send_report_nearby_buses_msg();
 }
 
 static void window_unload() {
   simple_menu_layer_destroy(s_nearby_buses_layer);
   window_destroy(s_window);
+  app_message_deregister_callbacks();
+  tick_timer_service_unsubscribe();
 }
 
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
   if(tick_time->tm_sec % REFRESH_INTERVAL == 0) {
-    // Begin dictionary
-    DictionaryIterator *iter;
-    app_message_outbox_begin(&iter);
-
-    // Add a key-value pair
-    dict_write_uint8(iter, 0, 0);
-
-    // Send the message!
-    app_message_outbox_send();
+    send_report_nearby_buses_msg();
   }
 }
 
@@ -94,18 +102,6 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   layer_mark_dirty(simple_menu_layer_get_layer(s_nearby_buses_layer));
 }
 
-static void inbox_dropped_callback(AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
-}
-
-static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
-}
-
-static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
-  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
-}
-
 
 Window *create_nearby_buses_window() {
   s_window = window_create();
@@ -114,16 +110,9 @@ Window *create_nearby_buses_window() {
     .load = window_load,
     .unload = window_unload
   });
-  // Register with TickTimerService
+
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
-
-  // Register callbacks
   app_message_register_inbox_received(inbox_received_callback);
-  app_message_register_inbox_dropped(inbox_dropped_callback);
-  app_message_register_outbox_failed(outbox_failed_callback);
-  app_message_register_outbox_sent(outbox_sent_callback);
-
-  // Open AppMessage
   app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 
   return s_window;

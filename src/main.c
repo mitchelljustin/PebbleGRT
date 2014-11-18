@@ -7,7 +7,7 @@ static void open_nearby_buses(int index, void *context);
 
 static SimpleMenuItem s_main_menu_items[1];
 
-static SimpleMenuSection s_main_menu_section = (SimpleMenuSection) {
+static SimpleMenuSection s_main_menu_section = {
   .items = s_main_menu_items,
   .num_items = 1,
   .title = "Actions"
