@@ -79,7 +79,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
           .title = (*bus)->distance,
           .subtitle = (*bus)->description,
           .icon = NULL,
-          .callback = NULL
+          .callback = menu_item_clicked
         };
         s_menu_items[index] = bus_item;
         break;
@@ -90,6 +90,12 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   }
 
   layer_mark_dirty(simple_menu_layer_get_layer(s_nearby_buses_layer));
+}
+
+static void menu_item_clicked(int index, void *context) {
+  Window *bus_detail_window = create_bus_detail_window(s_buses[index]);
+
+  window_stack_push(bus_detail_window, true);
 }
 
 

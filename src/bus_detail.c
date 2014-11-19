@@ -1,14 +1,13 @@
 #include <pebble.h>
 #include "message_types.h"
+#include "bus_detail.h"
 
 #define NUM_UPCOMING_STOPS 7
 static const int REFRESH_INTERVAL = 27;
 
 static Window *s_window;
 
-static const char *s_vehicleId;
-static const char *s_tripId;
-
+static const struct PGBus s_bus;
 static char s_delay_subtitle[80];
 
 static SimpleMenuItem s_menu_items[NUM_UPCOMING_STOPS];
@@ -27,9 +26,9 @@ static void send_bus_detail_msg() {
 
   dict_write_uint8(iter, PGKeyMessageType, (uint8_t) PGMessageTypeBusDetail);
 
-  dict_write_cstring(iter, PGKeyVehicleId, s_vehicleId);
+  dict_write_cstring(iter, PGKeyVehicleId, s_bus->vehicleId);
 
-  dict_write_cstring(iter, PGKeyTripId, s_tripId);
+  dict_write_cstring(iter, PGKeyTripId, s_bus->tripId);
 
   app_message_outbox_send();
 }
@@ -94,10 +93,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 }
 
 
-Window *create_bus_detail_window(const char *vehicleId, const char *tripId) {
+Window *create_bus_detail_window(struct PGBus *bus) {
   s_window = window_create();
-  s_vehicleId = vehicleId;
-  s_tripId = tripId;
+  memcpy(&s_bus, bus, sizeof(struct PGBus));
 
   window_set_window_handlers(s_window, (WindowHandlers) {
     .load = window_load,
