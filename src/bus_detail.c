@@ -1,21 +1,22 @@
 #include <pebble.h>
 #include "message_types.h"
 #include "bus_detail.h"
+#include "pgbus.h"
 
-#define NUM_UPCOMING_STOPS 7
+#define NUM_MENU_ITEMS 5
 static const int REFRESH_INTERVAL = 27;
 
 static Window *s_window;
 
-static const struct PGBus s_bus;
+static struct PGBus s_bus;
 static char s_delay_subtitle[80];
 
-static SimpleMenuItem s_menu_items[NUM_UPCOMING_STOPS];
+static SimpleMenuItem s_menu_items[NUM_MENU_ITEMS];
 
 static SimpleMenuSection s_default_menu_section = {
   .items = s_menu_items,
-  .num_items = NUM_UPCOMING_STOPS + 1,
-  .title = "Nearby Buses"
+  .num_items = NUM_MENU_ITEMS,
+  .title = "Bus Detail"
 };
 
 static SimpleMenuLayer *s_menu_layer;
@@ -26,15 +27,19 @@ static void send_bus_detail_msg() {
 
   dict_write_uint8(iter, PGKeyMessageType, (uint8_t) PGMessageTypeBusDetail);
 
-  dict_write_cstring(iter, PGKeyVehicleId, s_bus->vehicleId);
+  dict_write_cstring(iter, PGKeyVehicleId, s_bus.vehicleId);
 
-  dict_write_cstring(iter, PGKeyTripId, s_bus->tripId);
+  dict_write_cstring(iter, PGKeyTripId, s_bus.tripId);
 
   app_message_outbox_send();
 }
 
 static void window_load(Window *window) {
   s_menu_items[0] = (SimpleMenuItem) {
+    .title = s_bus.distance,
+    .subtitle = s_bus.description
+  };
+  s_menu_items[1] = (SimpleMenuItem) {
     .title = "Loading..",
     .subtitle = NULL
   };

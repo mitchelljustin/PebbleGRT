@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include "message_types.h"
+#include "bus_detail.h"
 #include "pgbus.h"
 
 #define MAX_NUM_NEARBY_BUSES 6
@@ -58,6 +59,13 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   }
 }
 
+
+static void menu_item_clicked(int index, void *context) {
+  Window *bus_detail_window = create_bus_detail_window(s_buses[index]);
+
+  window_stack_push(bus_detail_window, true);
+}
+
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   Tuple *t = dict_read_first(iterator);
 
@@ -91,13 +99,6 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 
   layer_mark_dirty(simple_menu_layer_get_layer(s_nearby_buses_layer));
 }
-
-static void menu_item_clicked(int index, void *context) {
-  Window *bus_detail_window = create_bus_detail_window(s_buses[index]);
-
-  window_stack_push(bus_detail_window, true);
-}
-
 
 Window *create_nearby_buses_window() {
   s_window = window_create();
