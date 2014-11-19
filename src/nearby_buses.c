@@ -2,13 +2,13 @@
 #include "message_types.h"
 #include "pgbus.h"
 
-#define MAX_NUM_NEARBY_BUSES 5
+#define MAX_NUM_NEARBY_BUSES 6
 static const int REFRESH_INTERVAL = 27;
 
 static Window *s_window;
 
 static SimpleMenuItem s_menu_items[MAX_NUM_NEARBY_BUSES];
-static struct PGBus *s_buses[MAX_NUM_NEARBY_BUSES];
+static struct PGBus *s_buses[MAX_NUM_NEARBY_BUSES] = { NULL };
 
 static SimpleMenuSection s_default_menu_section = {
   .items = s_menu_items,
@@ -70,6 +70,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
         APP_LOG(APP_LOG_LEVEL_INFO, "'%lu' received with value %s", t->key, t->value->cstring);
         int index = t->key - 1;
         struct PGBus **bus = &s_buses[index];
+        APP_LOG(APP_LOG_LEVEL_INFO, "Bus at index %i = %p", index, *bus);
         if (*bus != NULL) {
           pgbus_destroy(*bus);
         }

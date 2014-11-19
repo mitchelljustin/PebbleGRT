@@ -29,7 +29,7 @@ function extendWithArray(obj, array, startIndex) {
 // }
 
 var DEFAULT_BUS_DISTANCE_LIMIT = 20; // km
-var MAX_NUM_CLOSE_BUSES = 7;
+var MAX_NUM_CLOSE_BUSES = 6;
 
 var TYPE_KEY = '0';
 var TYPE_VALUE_CLOSE_BUSES = 0;
