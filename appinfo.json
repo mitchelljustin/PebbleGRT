@@ -1,5 +1,7 @@
 {
-    "appKeys": {},
+    "appKeys": {
+      "PGKeyMessageType": 0
+    },
     "capabilities": [
         "location"
     ],

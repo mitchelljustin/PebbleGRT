@@ -3,17 +3,17 @@
 #include "bus_detail.h"
 #include "pgbus.h"
 
-#define MAX_NUM_NEARBY_BUSES 6
+#define NUM_MENU_ITEMS 6
 static const int REFRESH_INTERVAL = 27;
 
 static Window *s_window;
 
-static SimpleMenuItem s_menu_items[MAX_NUM_NEARBY_BUSES];
-static struct PGBus *s_buses[MAX_NUM_NEARBY_BUSES] = { NULL };
+static SimpleMenuItem s_menu_items[NUM_MENU_ITEMS];
+static struct PGBus *s_buses[NUM_MENU_ITEMS] = { NULL };
 
 static SimpleMenuSection s_default_menu_section = {
   .items = s_menu_items,
-  .num_items = MAX_NUM_NEARBY_BUSES,
+  .num_items = NUM_MENU_ITEMS,
   .title = "Nearby Buses"
 };
 
@@ -49,16 +49,33 @@ static void window_unload() {
   window_destroy(s_window);
   app_message_deregister_callbacks();
   tick_timer_service_unsubscribe();
+
+  APP_LOG(APP_LOG_LEVEL_INFO, "app_message_deregister_callbacks");
+
+  for (int i = 0; i < NUM_MENU_ITEMS; i++) {
+    if (s_buses[i] != NULL) {
+      pgbus_destroy(s_buses[i]);
+    }
+    s_menu_items[i] = (SimpleMenuItem) {
+      .title = NULL,
+      .subtitle = NULL,
+      .icon = NULL,
+      .callback = NULL,
+    };
+  }
 }
 
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-
   if(tick_time->tm_sec % REFRESH_INTERVAL == 0) {
     send_report_nearby_buses_msg();
   }
 }
 
+static void log_four_bytes(void *ptr) {
+  unsigned int *ptr_raw = (unsigned int *) ptr;
+  APP_LOG(APP_LOG_LEVEL_INFO, "%p = %8X %8X %8X %8X", ptr, *ptr_raw, *(ptr_raw+1), *(ptr_raw+2), *(ptr_raw+3));
+}
 
 static void menu_item_clicked(int index, void *context) {
   Window *bus_detail_window = create_bus_detail_window(s_buses[index]);
@@ -67,18 +84,20 @@ static void menu_item_clicked(int index, void *context) {
 }
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+  log_four_bytes(iterator);
+
   Tuple *t = dict_read_first(iterator);
 
   while(t != NULL) {
+    log_four_bytes(t);
     switch (t->key) {
       case 0:
-        APP_LOG(APP_LOG_LEVEL_INFO, "KEY_TYPE received with value %d", (int)t->value->int32);
+        APP_LOG(APP_LOG_LEVEL_INFO, "Received: PBKeyMessageType = %d", (int)t->value->int32);
         break;
       default: {
-        APP_LOG(APP_LOG_LEVEL_INFO, "'%lu' received with value %s", t->key, t->value->cstring);
+        APP_LOG(APP_LOG_LEVEL_INFO, "Bus %lu received with value %s", t->key, t->value->cstring);
         int index = t->key - 1;
         struct PGBus **bus = &s_buses[index];
-        APP_LOG(APP_LOG_LEVEL_INFO, "Bus at index %i = %p", index, *bus);
         if (*bus != NULL) {
           pgbus_destroy(*bus);
         }
@@ -94,7 +113,11 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       }
     }
 
-    t = dict_read_next(iterator);
+    Tuple *next = dict_read_next(iterator);
+    if (t == next) {
+      break;
+    }
+    t = next;
   }
 
   layer_mark_dirty(simple_menu_layer_get_layer(s_nearby_buses_layer));
@@ -109,6 +132,7 @@ Window *create_nearby_buses_window() {
   });
 
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
+  APP_LOG(APP_LOG_LEVEL_INFO, "app_message_register_inbox_received");
   app_message_register_inbox_received(inbox_received_callback);
   app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 

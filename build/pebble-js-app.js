@@ -31,7 +31,6 @@ function extendWithArray(obj, array, startIndex) {
 var DEFAULT_BUS_DISTANCE_LIMIT = 20; // km
 var MAX_NUM_CLOSE_BUSES = 6;
 
-var TYPE_KEY = '0';
 var TYPE_VALUE_CLOSE_BUSES = 0;
 
 function getGeoLocation(onSuccess) {
@@ -72,9 +71,11 @@ function reportClosestBuses() {
     }
 
     var msg = {
-      TYPE_KEY: TYPE_VALUE_CLOSE_BUSES
+      "PGKeyMessageType": TYPE_VALUE_CLOSE_BUSES
     };
     extendWithArray(msg, busStrings, 1);
+
+    console.log("Sending message: "+JSON.stringify(msg));
 
     Pebble.sendAppMessage(msg,
       function () {
@@ -90,16 +91,10 @@ function reportClosestBuses() {
   });
 }
 
-Pebble.addEventListener('ready',
-  function(e) {
-    console.log("PebbleKit JS ready!");
-  }
-);
-
 // Listen for when an AppMessage is received
 Pebble.addEventListener('appmessage',
   function(e) {
-    console.log("AppMessage received!");
+    console.log("AppMessage received: "+ JSON.stringify(e.payload));
     reportClosestBuses();
   }
 );
