@@ -9,6 +9,8 @@ static const int REFRESH_INTERVAL = 27;
 static Window *s_window;
 
 static struct PGBus s_bus;
+static char *s_bus_direction_desc;
+
 static char s_delay_subtitle[80];
 
 static SimpleMenuItem s_menu_items[NUM_MENU_ITEMS];
@@ -36,8 +38,8 @@ static void send_bus_detail_msg() {
 
 static void window_load(Window *window) {
   s_menu_items[0] = (SimpleMenuItem) {
-    .title = s_bus.distance,
-    .subtitle = s_bus.description
+    .title = s_bus.description,
+    .subtitle = s_bus_direction_desc
   };
   s_menu_items[1] = (SimpleMenuItem) {
     .title = "Loading..",
@@ -97,10 +99,19 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   layer_mark_dirty(simple_menu_layer_get_layer(s_menu_layer));
 }
 
+static void parse_bus_direction_desc() {
+  s_bus_direction_desc = s_bus.description;
+  while (*s_bus_direction_desc != ' ') {
+    s_bus_direction_desc++;
+  }
+  *s_bus_direction_desc = '\0';
+  s_bus_direction_desc++;
+}
 
 Window *create_bus_detail_window(struct PGBus *bus) {
   s_window = window_create();
   memcpy(&s_bus, bus, sizeof(struct PGBus));
+  parse_bus_direction_desc();
 
   window_set_window_handlers(s_window, (WindowHandlers) {
     .load = window_load,
