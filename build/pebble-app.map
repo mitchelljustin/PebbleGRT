@@ -27,6 +27,10 @@ Discarded input sections
  .bss           0x0000000000000000        0x0 src/pgbus.c.8.o
  .text          0x0000000000000000        0x0 src/util.c.8.o
  .bss           0x0000000000000000        0x0 src/util.c.8.o
+ .text.log_four_words
+                0x0000000000000000       0x30 src/util.c.8.o
+ .rodata.str1.1
+                0x0000000000000000       0x20 src/util.c.8.o
  .text          0x0000000000000000        0x0 appinfo.auto.c.8.o
  .bss           0x0000000000000000        0x0 appinfo.auto.c.8.o
  .bss           0x0000000000000000        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
@@ -684,244 +688,239 @@ LOAD /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../li
  .pbl_header    0x0000000000000000       0x82 appinfo.auto.c.8.o
                 0x0000000000000000                __pbl_app_info
 
-.text           0x0000000000000084      0x9b7
+.text           0x0000000000000084      0x912
  *(.text)
  .text          0x0000000000000084       0x14 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
  *(.text.*)
  .text.inbox_received_callback
-                0x0000000000000098       0xa4 src/bus_detail.c.8.o
+                0x0000000000000098       0x90 src/bus_detail.c.8.o
  .text.send_bus_detail_msg
-                0x000000000000013c       0x38 src/bus_detail.c.8.o
+                0x0000000000000128       0x38 src/bus_detail.c.8.o
  .text.tick_handler
-                0x0000000000000174       0x14 src/bus_detail.c.8.o
+                0x0000000000000160       0x14 src/bus_detail.c.8.o
  .text.window_unload
-                0x0000000000000188       0x24 src/bus_detail.c.8.o
+                0x0000000000000174       0x24 src/bus_detail.c.8.o
  .text.window_load
-                0x00000000000001ac       0x94 src/bus_detail.c.8.o
+                0x0000000000000198       0x94 src/bus_detail.c.8.o
  .text.create_bus_detail_window
-                0x0000000000000240       0x98 src/bus_detail.c.8.o
-                0x0000000000000240                create_bus_detail_window
+                0x000000000000022c       0x98 src/bus_detail.c.8.o
+                0x000000000000022c                create_bus_detail_window
  .text.open_nearby_buses
-                0x00000000000002d8       0x10 src/main.c.8.o
+                0x00000000000002c4       0x10 src/main.c.8.o
  .text.main_window_unload
-                0x00000000000002e8       0x10 src/main.c.8.o
+                0x00000000000002d4       0x10 src/main.c.8.o
  .text.main_window_load
-                0x00000000000002f8       0x4c src/main.c.8.o
+                0x00000000000002e4       0x4c src/main.c.8.o
  .text.startup.main
-                0x0000000000000344       0x94 src/main.c.8.o
-                0x0000000000000344                main
+                0x0000000000000330       0x94 src/main.c.8.o
+                0x0000000000000330                main
  .text.outbox_sent_callback
-                0x00000000000003d8       0x18 src/nearby_buses.c.8.o
+                0x00000000000003c4       0x18 src/nearby_buses.c.8.o
  .text.outbox_failed_callback
-                0x00000000000003f0       0x18 src/nearby_buses.c.8.o
+                0x00000000000003dc       0x18 src/nearby_buses.c.8.o
  .text.inbox_dropped_callback
-                0x0000000000000408       0x18 src/nearby_buses.c.8.o
+                0x00000000000003f4       0x18 src/nearby_buses.c.8.o
  .text.inbox_received_callback
-                0x0000000000000420       0xe4 src/nearby_buses.c.8.o
+                0x000000000000040c       0xd4 src/nearby_buses.c.8.o
  .text.menu_item_clicked
-                0x0000000000000504       0x28 src/nearby_buses.c.8.o
+                0x00000000000004e0       0x28 src/nearby_buses.c.8.o
  .text.send_report_nearby_buses_msg
-                0x000000000000052c       0x18 src/nearby_buses.c.8.o
+                0x0000000000000508       0x18 src/nearby_buses.c.8.o
  .text.tick_handler
-                0x0000000000000544       0x14 src/nearby_buses.c.8.o
+                0x0000000000000520       0x14 src/nearby_buses.c.8.o
  .text.window_unload
-                0x0000000000000558       0x68 src/nearby_buses.c.8.o
+                0x0000000000000534       0x58 src/nearby_buses.c.8.o
  .text.window_load
-                0x00000000000005c0       0x6c src/nearby_buses.c.8.o
+                0x000000000000058c       0x6c src/nearby_buses.c.8.o
  .text.create_nearby_buses_window
-                0x000000000000062c       0x84 src/nearby_buses.c.8.o
-                0x000000000000062c                create_nearby_buses_window
+                0x00000000000005f8       0x84 src/nearby_buses.c.8.o
+                0x00000000000005f8                create_nearby_buses_window
  .text.pgbus_create
-                0x00000000000006b0        0x6 src/pgbus.c.8.o
-                0x00000000000006b0                pgbus_create
+                0x000000000000067c        0x6 src/pgbus.c.8.o
+                0x000000000000067c                pgbus_create
  .text.pgbus_destroy
-                0x00000000000006b6        0x4 src/pgbus.c.8.o
-                0x00000000000006b6                pgbus_destroy
+                0x0000000000000682        0x4 src/pgbus.c.8.o
+                0x0000000000000682                pgbus_destroy
  .text.pgbus_parse_from_string
-                0x00000000000006ba       0x70 src/pgbus.c.8.o
-                0x00000000000006ba                pgbus_parse_from_string
- *fill*         0x000000000000072a        0x2 
- .text.log_four_words
-                0x000000000000072c       0x30 src/util.c.8.o
-                0x000000000000072c                log_four_words
+                0x0000000000000686       0x70 src/pgbus.c.8.o
+                0x0000000000000686                pgbus_parse_from_string
+ *fill*         0x00000000000006f6        0x2 
  .text.app_event_loop
-                0x000000000000075c        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x000000000000075c                app_event_loop
- .text.app_log  0x0000000000000768        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000768                app_log
+                0x00000000000006f8        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000006f8                app_event_loop
+ .text.app_log  0x0000000000000704        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000704                app_log
  .text.app_message_deregister_callbacks
-                0x0000000000000774        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000774                app_message_deregister_callbacks
+                0x0000000000000710        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000710                app_message_deregister_callbacks
  .text.app_message_open
-                0x0000000000000780        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000780                app_message_open
+                0x000000000000071c        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x000000000000071c                app_message_open
  .text.dict_read_first
-                0x000000000000078c        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x000000000000078c                dict_read_first
+                0x0000000000000728        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000728                dict_read_first
  .text.dict_read_next
-                0x0000000000000798        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000798                dict_read_next
+                0x0000000000000734        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000734                dict_read_next
  .text.dict_write_cstring
-                0x00000000000007a4        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000007a4                dict_write_cstring
+                0x0000000000000740        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000740                dict_write_cstring
  .text.dict_write_uint8
-                0x00000000000007b0        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000007b0                dict_write_uint8
- .text.free     0x00000000000007bc        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000007bc                free
+                0x000000000000074c        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x000000000000074c                dict_write_uint8
+ .text.free     0x0000000000000758        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000758                free
  .text.layer_add_child
-                0x00000000000007c8        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000007c8                layer_add_child
+                0x0000000000000764        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000764                layer_add_child
  .text.layer_get_bounds
-                0x00000000000007d4        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000007d4                layer_get_bounds
+                0x0000000000000770        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000770                layer_get_bounds
  .text.layer_mark_dirty
-                0x00000000000007e0        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000007e0                layer_mark_dirty
- .text.malloc   0x00000000000007ec        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000007ec                malloc
- .text.memcpy   0x00000000000007f8        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000007f8                memcpy
- .text.memset   0x0000000000000804        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000804                memset
+                0x000000000000077c        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x000000000000077c                layer_mark_dirty
+ .text.malloc   0x0000000000000788        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000788                malloc
+ .text.memcpy   0x0000000000000794        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000794                memcpy
+ .text.memset   0x00000000000007a0        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000007a0                memset
  .text.simple_menu_layer_create
-                0x0000000000000810        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000810                simple_menu_layer_create
+                0x00000000000007ac        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000007ac                simple_menu_layer_create
  .text.simple_menu_layer_destroy
-                0x000000000000081c        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x000000000000081c                simple_menu_layer_destroy
+                0x00000000000007b8        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000007b8                simple_menu_layer_destroy
  .text.simple_menu_layer_get_layer
-                0x0000000000000828        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000828                simple_menu_layer_get_layer
- .text.strcpy   0x0000000000000834        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000834                strcpy
- .text.strncpy  0x0000000000000840        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000840                strncpy
+                0x00000000000007c4        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000007c4                simple_menu_layer_get_layer
+ .text.strcpy   0x00000000000007d0        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000007d0                strcpy
+ .text.strncpy  0x00000000000007dc        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000007dc                strncpy
  .text.tick_timer_service_subscribe
-                0x000000000000084c        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x000000000000084c                tick_timer_service_subscribe
+                0x00000000000007e8        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000007e8                tick_timer_service_subscribe
  .text.tick_timer_service_unsubscribe
-                0x0000000000000858        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000858                tick_timer_service_unsubscribe
+                0x00000000000007f4        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000007f4                tick_timer_service_unsubscribe
  .text.window_create
-                0x0000000000000864        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000864                window_create
+                0x0000000000000800        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000800                window_create
  .text.window_destroy
-                0x0000000000000870        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000870                window_destroy
+                0x000000000000080c        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x000000000000080c                window_destroy
  .text.window_get_root_layer
-                0x000000000000087c        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x000000000000087c                window_get_root_layer
+                0x0000000000000818        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000818                window_get_root_layer
  .text.window_set_window_handlers
-                0x0000000000000888        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000888                window_set_window_handlers
+                0x0000000000000824        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000824                window_set_window_handlers
  .text.window_stack_push
-                0x0000000000000894        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000894                window_stack_push
+                0x0000000000000830        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000830                window_stack_push
  .text.app_message_inbox_size_maximum
-                0x00000000000008a0        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000008a0                app_message_inbox_size_maximum
+                0x000000000000083c        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x000000000000083c                app_message_inbox_size_maximum
  .text.app_message_outbox_begin
-                0x00000000000008ac        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000008ac                app_message_outbox_begin
+                0x0000000000000848        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000848                app_message_outbox_begin
  .text.app_message_outbox_send
-                0x00000000000008b8        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000008b8                app_message_outbox_send
+                0x0000000000000854        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000854                app_message_outbox_send
  .text.app_message_outbox_size_maximum
-                0x00000000000008c4        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000008c4                app_message_outbox_size_maximum
+                0x0000000000000860        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000860                app_message_outbox_size_maximum
  .text.app_message_register_inbox_dropped
-                0x00000000000008d0        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000008d0                app_message_register_inbox_dropped
+                0x000000000000086c        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x000000000000086c                app_message_register_inbox_dropped
  .text.app_message_register_inbox_received
-                0x00000000000008dc        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000008dc                app_message_register_inbox_received
+                0x0000000000000878        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000878                app_message_register_inbox_received
  .text.app_message_register_outbox_failed
-                0x00000000000008e8        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000008e8                app_message_register_outbox_failed
+                0x0000000000000884        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000884                app_message_register_outbox_failed
  .text.app_message_register_outbox_sent
-                0x00000000000008f4        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000008f4                app_message_register_outbox_sent
+                0x0000000000000890        0xc /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000890                app_message_register_outbox_sent
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x0000000000000900       0x50 src/bus_detail.c.8.o
+                0x000000000000089c       0x50 src/bus_detail.c.8.o
  .rodata.str1.1
-                0x0000000000000950       0x15 src/main.c.8.o
+                0x00000000000008ec       0x15 src/main.c.8.o
  .rodata.str1.1
-                0x0000000000000965       0xb6 src/nearby_buses.c.8.o
-                                         0xc0 (size before relaxing)
- .rodata.str1.1
-                0x0000000000000a1b       0x20 src/util.c.8.o
+                0x0000000000000901       0x95 src/nearby_buses.c.8.o
+                                         0x9f (size before relaxing)
 
-.glue_7         0x0000000000000a3c        0x0
+.glue_7         0x0000000000000998        0x0
  .glue_7        0x0000000000000000        0x0 linker stubs
 
-.glue_7t        0x0000000000000a3c        0x0
+.glue_7t        0x0000000000000998        0x0
  .glue_7t       0x0000000000000000        0x0 linker stubs
 
-.vfp11_veneer   0x0000000000000a3c        0x0
+.vfp11_veneer   0x0000000000000998        0x0
  .vfp11_veneer  0x0000000000000000        0x0 linker stubs
 
-.v4_bx          0x0000000000000a3c        0x0
+.v4_bx          0x0000000000000998        0x0
  .v4_bx         0x0000000000000000        0x0 linker stubs
 
-.iplt           0x0000000000000a3c        0x0
+.iplt           0x0000000000000998        0x0
  .iplt          0x0000000000000000        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
 
-.rel.dyn        0x0000000000000a3c        0x0
+.rel.dyn        0x0000000000000998        0x0
  .rel.iplt      0x0000000000000000        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
 
-.data           0x0000000000000a3c       0x28
+.data           0x0000000000000998       0x28
  *(.data)
- .data          0x0000000000000a3c        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crti.o
- .data          0x0000000000000a3c        0x4 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
-                0x0000000000000a3c                __dso_handle
- .data          0x0000000000000a40        0x0 src/bus_detail.c.8.o
- .data          0x0000000000000a40        0x0 src/main.c.8.o
- .data          0x0000000000000a40        0x0 src/nearby_buses.c.8.o
- .data          0x0000000000000a40        0x0 src/pgbus.c.8.o
- .data          0x0000000000000a40        0x0 src/util.c.8.o
- .data          0x0000000000000a40        0x0 appinfo.auto.c.8.o
- .data          0x0000000000000a40        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
- .data          0x0000000000000a40        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtend.o
- .data          0x0000000000000a40        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtn.o
+ .data          0x0000000000000998        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crti.o
+ .data          0x0000000000000998        0x4 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
+                0x0000000000000998                __dso_handle
+ .data          0x000000000000099c        0x0 src/bus_detail.c.8.o
+ .data          0x000000000000099c        0x0 src/main.c.8.o
+ .data          0x000000000000099c        0x0 src/nearby_buses.c.8.o
+ .data          0x000000000000099c        0x0 src/pgbus.c.8.o
+ .data          0x000000000000099c        0x0 src/util.c.8.o
+ .data          0x000000000000099c        0x0 appinfo.auto.c.8.o
+ .data          0x000000000000099c        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+ .data          0x000000000000099c        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtend.o
+ .data          0x000000000000099c        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtn.o
  *(.data.*)
  .data.rel.local.s_default_menu_section
-                0x0000000000000a40        0xc src/bus_detail.c.8.o
+                0x000000000000099c        0xc src/bus_detail.c.8.o
  .data.rel.local.s_main_menu_section
-                0x0000000000000a4c        0xc src/main.c.8.o
+                0x00000000000009a8        0xc src/main.c.8.o
  .data.rel.local.s_default_menu_section
-                0x0000000000000a58        0xc src/nearby_buses.c.8.o
+                0x00000000000009b4        0xc src/nearby_buses.c.8.o
 
-.igot.plt       0x0000000000000a64        0x0
+.igot.plt       0x00000000000009c0        0x0
  .igot.plt      0x0000000000000000        0x0 /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
 
-.bss            0x0000000000000a64      0x1a8
+.bss            0x00000000000009c0      0x1a8
  *(.bss)
  *(.bss.*)
- .bss.s_bus     0x0000000000000a64       0x64 src/bus_detail.c.8.o
- .bss.s_window  0x0000000000000ac8        0x4 src/bus_detail.c.8.o
+ .bss.s_bus     0x00000000000009c0       0x64 src/bus_detail.c.8.o
+ .bss.s_window  0x0000000000000a24        0x4 src/bus_detail.c.8.o
  .bss.s_menu_items
-                0x0000000000000acc       0x50 src/bus_detail.c.8.o
+                0x0000000000000a28       0x50 src/bus_detail.c.8.o
  .bss.s_bus_direction_desc
-                0x0000000000000b1c        0x4 src/bus_detail.c.8.o
+                0x0000000000000a78        0x4 src/bus_detail.c.8.o
  .bss.s_delay_subtitle
-                0x0000000000000b20       0x50 src/bus_detail.c.8.o
+                0x0000000000000a7c       0x50 src/bus_detail.c.8.o
  .bss.s_menu_layer
-                0x0000000000000b70        0x4 src/bus_detail.c.8.o
+                0x0000000000000acc        0x4 src/bus_detail.c.8.o
  .bss.s_main_menu_layer
-                0x0000000000000b74        0x4 src/main.c.8.o
+                0x0000000000000ad0        0x4 src/main.c.8.o
  .bss.s_main_window
-                0x0000000000000b78        0x4 src/main.c.8.o
+                0x0000000000000ad4        0x4 src/main.c.8.o
  .bss.s_main_menu_items
-                0x0000000000000b7c       0x10 src/main.c.8.o
- .bss.s_buses   0x0000000000000b8c       0x18 src/nearby_buses.c.8.o
+                0x0000000000000ad8       0x10 src/main.c.8.o
+ .bss.s_buses   0x0000000000000ae8       0x18 src/nearby_buses.c.8.o
  .bss.s_menu_items
-                0x0000000000000ba4       0x60 src/nearby_buses.c.8.o
+                0x0000000000000b00       0x60 src/nearby_buses.c.8.o
  .bss.s_nearby_buses_layer
-                0x0000000000000c04        0x4 src/nearby_buses.c.8.o
- .bss.s_window  0x0000000000000c08        0x4 src/nearby_buses.c.8.o
+                0x0000000000000b60        0x4 src/nearby_buses.c.8.o
+ .bss.s_window  0x0000000000000b64        0x4 src/nearby_buses.c.8.o
 
 DISCARD
  libc.a(*)
@@ -966,28 +965,28 @@ OUTPUT(/Users/mitchell.vanderhoeff/dev/app/PebbleGRT/build/pebble-app.elf elf32-
  .comment       0x0000000000000000       0x4f appinfo.auto.c.8.o
  .comment       0x0000000000000000       0x4f /Users/mitchell.vanderhoeff/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtend.o
 
-.debug_info     0x0000000000000000     0x2fee
- .debug_info    0x0000000000000000      0xf0e src/bus_detail.c.8.o
- .debug_info    0x0000000000000f0e      0x859 src/main.c.8.o
- .debug_info    0x0000000000001767     0x1119 src/nearby_buses.c.8.o
- .debug_info    0x0000000000002880      0x327 src/pgbus.c.8.o
- .debug_info    0x0000000000002ba7      0x145 src/util.c.8.o
- .debug_info    0x0000000000002cec      0x302 appinfo.auto.c.8.o
+.debug_info     0x0000000000000000     0x2f48
+ .debug_info    0x0000000000000000      0xec2 src/bus_detail.c.8.o
+ .debug_info    0x0000000000000ec2      0x859 src/main.c.8.o
+ .debug_info    0x000000000000171b     0x10bf src/nearby_buses.c.8.o
+ .debug_info    0x00000000000027da      0x327 src/pgbus.c.8.o
+ .debug_info    0x0000000000002b01      0x145 src/util.c.8.o
+ .debug_info    0x0000000000002c46      0x302 appinfo.auto.c.8.o
 
-.debug_abbrev   0x0000000000000000      0xbd2
- .debug_abbrev  0x0000000000000000      0x31a src/bus_detail.c.8.o
- .debug_abbrev  0x000000000000031a      0x28e src/main.c.8.o
- .debug_abbrev  0x00000000000005a8      0x308 src/nearby_buses.c.8.o
- .debug_abbrev  0x00000000000008b0      0x1b2 src/pgbus.c.8.o
- .debug_abbrev  0x0000000000000a62       0xd2 src/util.c.8.o
- .debug_abbrev  0x0000000000000b34       0x9e appinfo.auto.c.8.o
+.debug_abbrev   0x0000000000000000      0xbb4
+ .debug_abbrev  0x0000000000000000      0x2fc src/bus_detail.c.8.o
+ .debug_abbrev  0x00000000000002fc      0x28e src/main.c.8.o
+ .debug_abbrev  0x000000000000058a      0x308 src/nearby_buses.c.8.o
+ .debug_abbrev  0x0000000000000892      0x1b2 src/pgbus.c.8.o
+ .debug_abbrev  0x0000000000000a44       0xd2 src/util.c.8.o
+ .debug_abbrev  0x0000000000000b16       0x9e appinfo.auto.c.8.o
 
-.debug_loc      0x0000000000000000      0x832
- .debug_loc     0x0000000000000000      0x221 src/bus_detail.c.8.o
- .debug_loc     0x0000000000000221      0x116 src/main.c.8.o
- .debug_loc     0x0000000000000337      0x3c0 src/nearby_buses.c.8.o
- .debug_loc     0x00000000000006f7       0xee src/pgbus.c.8.o
- .debug_loc     0x00000000000007e5       0x4d src/util.c.8.o
+.debug_loc      0x0000000000000000      0x855
+ .debug_loc     0x0000000000000000      0x244 src/bus_detail.c.8.o
+ .debug_loc     0x0000000000000244      0x116 src/main.c.8.o
+ .debug_loc     0x000000000000035a      0x3c0 src/nearby_buses.c.8.o
+ .debug_loc     0x000000000000071a       0xee src/pgbus.c.8.o
+ .debug_loc     0x0000000000000808       0x4d src/util.c.8.o
 
 .debug_aranges  0x0000000000000000      0x150
  .debug_aranges
@@ -1003,38 +1002,38 @@ OUTPUT(/Users/mitchell.vanderhoeff/dev/app/PebbleGRT/build/pebble-app.elf elf32-
  .debug_aranges
                 0x0000000000000138       0x18 appinfo.auto.c.8.o
 
-.debug_ranges   0x0000000000000000      0x1c8
+.debug_ranges   0x0000000000000000      0x1a8
  .debug_ranges  0x0000000000000000       0x70 src/bus_detail.c.8.o
  .debug_ranges  0x0000000000000070       0x50 src/main.c.8.o
- .debug_ranges  0x00000000000000c0       0xd8 src/nearby_buses.c.8.o
- .debug_ranges  0x0000000000000198       0x20 src/pgbus.c.8.o
- .debug_ranges  0x00000000000001b8       0x10 src/util.c.8.o
+ .debug_ranges  0x00000000000000c0       0xb8 src/nearby_buses.c.8.o
+ .debug_ranges  0x0000000000000178       0x20 src/pgbus.c.8.o
+ .debug_ranges  0x0000000000000198       0x10 src/util.c.8.o
 
-.debug_line     0x0000000000000000      0xa21
- .debug_line    0x0000000000000000      0x212 src/bus_detail.c.8.o
- .debug_line    0x0000000000000212      0x195 src/main.c.8.o
- .debug_line    0x00000000000003a7      0x273 src/nearby_buses.c.8.o
- .debug_line    0x000000000000061a      0x1ac src/pgbus.c.8.o
- .debug_line    0x00000000000007c6      0x121 src/util.c.8.o
- .debug_line    0x00000000000008e7      0x13a appinfo.auto.c.8.o
+.debug_line     0x0000000000000000      0xa02
+ .debug_line    0x0000000000000000      0x206 src/bus_detail.c.8.o
+ .debug_line    0x0000000000000206      0x195 src/main.c.8.o
+ .debug_line    0x000000000000039b      0x260 src/nearby_buses.c.8.o
+ .debug_line    0x00000000000005fb      0x1ac src/pgbus.c.8.o
+ .debug_line    0x00000000000007a7      0x121 src/util.c.8.o
+ .debug_line    0x00000000000008c8      0x13a appinfo.auto.c.8.o
 
 .debug_str      0x0000000000000000      0xd6b
- .debug_str     0x0000000000000000      0x8b2 src/bus_detail.c.8.o
-                                        0x9a0 (size before relaxing)
- .debug_str     0x00000000000008b2      0x138 src/main.c.8.o
+ .debug_str     0x0000000000000000      0x8a3 src/bus_detail.c.8.o
+                                        0x991 (size before relaxing)
+ .debug_str     0x00000000000008a3      0x138 src/main.c.8.o
                                         0x5c3 (size before relaxing)
- .debug_str     0x00000000000009ea      0x185 src/nearby_buses.c.8.o
-                                        0xac9 (size before relaxing)
- .debug_str     0x0000000000000b6f       0x65 src/pgbus.c.8.o
+ .debug_str     0x00000000000009db      0x185 src/nearby_buses.c.8.o
+                                        0xaba (size before relaxing)
+ .debug_str     0x0000000000000b60       0x65 src/pgbus.c.8.o
                                         0x196 (size before relaxing)
- .debug_str     0x0000000000000bd4       0x16 src/util.c.8.o
+ .debug_str     0x0000000000000bc5       0x25 src/util.c.8.o
                                         0x17a (size before relaxing)
  .debug_str     0x0000000000000bea      0x181 appinfo.auto.c.8.o
                                         0x279 (size before relaxing)
 
-.debug_frame    0x0000000000000000      0x2c0
+.debug_frame    0x0000000000000000      0x2c4
  .debug_frame   0x0000000000000000       0xb4 src/bus_detail.c.8.o
  .debug_frame   0x00000000000000b4       0x7c src/main.c.8.o
- .debug_frame   0x0000000000000130      0x10c src/nearby_buses.c.8.o
- .debug_frame   0x000000000000023c       0x50 src/pgbus.c.8.o
- .debug_frame   0x000000000000028c       0x34 src/util.c.8.o
+ .debug_frame   0x0000000000000130      0x110 src/nearby_buses.c.8.o
+ .debug_frame   0x0000000000000240       0x50 src/pgbus.c.8.o
+ .debug_frame   0x0000000000000290       0x34 src/util.c.8.o

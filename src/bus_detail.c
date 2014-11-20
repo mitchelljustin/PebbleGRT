@@ -79,18 +79,14 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 {
-    log_four_words(iterator);
-    log_four_words(iterator->dictionary);
-
     Tuple *t = dict_read_first(iterator);
     while (t != NULL) {
-        log_four_words(t);
         switch (t->key) {
             case PGKeyMessageType:
                 APP_LOG(APP_LOG_LEVEL_INFO, "PGKeyMessageType received with value %d", (int) t->value->int32);
                 break;
             case PGKeyBusDetailDelay: {
-                SimpleMenuItem *delay_item = &s_menu_items[0];
+                SimpleMenuItem *delay_item = &s_menu_items[1];
                 if (delay_item->subtitle == NULL) {
                     delay_item->title = "Delay";
                     delay_item->subtitle = s_delay_subtitle;
@@ -98,13 +94,11 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
                 strcpy(s_delay_subtitle, t->value->cstring);
                 break;
             }
-            default: {
-            }
+            default:break;
         }
 
         t = dict_read_next(iterator);
     }
-
     layer_mark_dirty(simple_menu_layer_get_layer(s_menu_layer));
 }
 

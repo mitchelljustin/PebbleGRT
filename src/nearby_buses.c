@@ -54,11 +54,10 @@ static void window_unload(Window *window)
     app_message_deregister_callbacks();
     tick_timer_service_unsubscribe();
 
-    APP_LOG(APP_LOG_LEVEL_INFO, "app_message_deregister_callbacks");
-
     for (int i = 0; i < NUM_MENU_ITEMS; i++) {
         if (s_buses[i] != NULL) {
             pgbus_destroy(s_buses[i]);
+            s_buses[i] = NULL;
         }
         s_menu_items[i] = (SimpleMenuItem) {
             .title = NULL,
@@ -91,11 +90,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 {
     Tuple *t = dict_read_first(iterator);
 
-    log_four_words(iterator);
-    log_four_words(iterator->dictionary);
-
     while (t != NULL) {
-        log_four_words(t);
         switch (t->key) {
             case 0:
                 APP_LOG(APP_LOG_LEVEL_INFO, "Received: PBKeyMessageType = %d", (int) t->value->int32);

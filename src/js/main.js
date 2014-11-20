@@ -72,7 +72,7 @@ function busDetail(vehicleId, tripId) {
 
     function busInfoCallback(info) {
         var msg = {};
-        msg["PGKeyMessageType"] = PGTypeBusDetail;
+        msg["PGKeyMessageType"] = 1;
         msg["PGKeyBusDetailDelay"] = info.delay;
 
         console.log("Sending message: "+JSON.stringify(msg));

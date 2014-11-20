@@ -97,7 +97,7 @@ function busDetail(vehicleId, tripId) {
 
     function busInfoCallback(info) {
         var msg = {};
-        msg["PGKeyMessageType"] = PGTypeBusDetail;
+        msg["PGKeyMessageType"] = 1;
         msg["PGKeyBusDetailDelay"] = info.delay;
 
         console.log("Sending message: "+JSON.stringify(msg));
@@ -183,21 +183,20 @@ GRT.getClosestBuses = function (myLoc, limit, callback) {
 
 GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
     var request = new XMLHttpRequest();
-    request.open("GET", "http://realtimemap.grt.ca/Stop/GetBusInfo?" +
-        "VehicleId="+encodeURIComponent(vehicleId)+"&" +
-        "TripId="+encodeURIComponent(tripId));
+    request.open("GET", "http://realtimemap.grt.ca/Stop/GetBusInfo?VehicleId="+vehicleId+"&TripId="+tripId);
     request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
     request.onload = function () {
         if (request.status == 200) {
             var stops = JSON.parse(request.responseText)["stopTimes"];
             var nextStop = stops[0];
-            var delaySeconds = nextStop["Delay"] * -2;
-            var delaySecondsString = (delaySeconds % 60) + "";
-            if (delaySecondsString.length == 1) {
-                delaySecondsString = "0" + delaySecondsString;
+            var delayTotalSeconds = nextStop["Delay"] * -2;
+            var delayMinutes = Math.floor(delayTotalSeconds / 60);
+            var delaySeconds = Math.round(((delayTotalSeconds / 60) - delayMinutes) * 60);
+            var delayString = "";
+            if (delayMinutes.length != 0) {
+                delayString += delayMinutes + "m "
             }
-            var delayMinutesStrings = Math.floor(delaySeconds / 60);
-            var delayString = delayMinutesStrings + ":" + delaySecondsString;
+            delayString += delaySeconds + "s";
             callback({
                 delay: delayString
             });

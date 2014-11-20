@@ -57,13 +57,14 @@ GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
         if (request.status == 200) {
             var stops = JSON.parse(request.responseText)["stopTimes"];
             var nextStop = stops[0];
-            var delaySeconds = nextStop["Delay"] * -2;
-            var delaySecondsString = (delaySeconds % 60) + "";
-            if (delaySecondsString.length == 1) {
-                delaySecondsString = "0" + delaySecondsString;
+            var delayTotalSeconds = nextStop["Delay"] * -2;
+            var delayMinutes = Math.floor(delayTotalSeconds / 60);
+            var delaySeconds = Math.round(((delayTotalSeconds / 60) - delayMinutes) * 60);
+            var delayString = "";
+            if (delayMinutes.length != 0) {
+                delayString += delayMinutes + "m "
             }
-            var delayMinutesStrings = Math.floor(delaySeconds / 60);
-            var delayString = delayMinutesStrings + ":" + delaySecondsString;
+            delayString += delaySeconds + "s";
             callback({
                 delay: delayString
             });
