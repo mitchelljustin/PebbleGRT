@@ -3,11 +3,12 @@
 #define PGBusVehicleIdMaxStringLength 15
 #define PGBusTripIdMaxStringLength 15
 
-struct PGBus {
-  char distance     [PGBusDistanceMaxStringLength];
-  char description  [PGBusDescriptionMaxStringLength];
-  char vehicleId    [PGBusVehicleIdMaxStringLength];
-  char tripId       [PGBusTripIdMaxStringLength];
+struct PGBus
+{
+    char distance[PGBusDistanceMaxStringLength];
+    char description[PGBusDescriptionMaxStringLength];
+    char vehicleId[PGBusVehicleIdMaxStringLength];
+    char tripId[PGBusTripIdMaxStringLength];
 };
 
 struct PGBus *pgbus_create();

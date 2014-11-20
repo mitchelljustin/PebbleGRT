@@ -2,7 +2,6 @@
 #include "message_types.h"
 #include "bus_detail.h"
 #include "pgbus.h"
-#include "util.h"
 
 #define NUM_MENU_ITEMS 5
 static const int REFRESH_INTERVAL = 27;
@@ -94,7 +93,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
                 strcpy(s_delay_subtitle, t->value->cstring);
                 break;
             }
-            default:break;
+            default:
+                break;
         }
 
         t = dict_read_next(iterator);

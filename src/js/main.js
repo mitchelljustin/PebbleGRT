@@ -68,14 +68,14 @@ function reportClosestBuses() {
 }
 
 function busDetail(vehicleId, tripId) {
-    console.log("Getting bus detail for vehicleId="+vehicleId+" tripId="+tripId);
+    console.log("Getting bus detail for vehicleId=" + vehicleId + " tripId=" + tripId);
 
     function busInfoCallback(info) {
         var msg = {};
         msg["PGKeyMessageType"] = 1;
         msg["PGKeyBusDetailDelay"] = info.delay;
 
-        console.log("Sending message: "+JSON.stringify(msg));
+        console.log("Sending message: " + JSON.stringify(msg));
 
         Pebble.sendAppMessage(msg,
             function () {
