@@ -14,6 +14,7 @@
 		C2131712BC7735ABF8A325E6 /* realtime-api.js in Sources */ = {isa = PBXBuildFile; fileRef = C21318641ADD29DC8447858C /* realtime-api.js */; };
 		C2131860A650B5E559FF1C42 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = C2131394ECB385B21C51405D /* main.c */; };
 		C2131936FE16D923C44A14F8 /* pgbus.c in Sources */ = {isa = PBXBuildFile; fileRef = C21311ABB26657F497295CD4 /* pgbus.c */; };
+		C213197DDEF97CA1E26858B3 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = C21314FFA7D096BB0D75FE2E /* util.c */; };
 		C2131A3FDEBE6E7EF7A7D060 /* appinfo.auto.c in Sources */ = {isa = PBXBuildFile; fileRef = C21314DE20433F3065B6252F /* appinfo.auto.c */; };
 		C2131A48069BFED9AF757E12 /* pebble-js-app.js in Sources */ = {isa = PBXBuildFile; fileRef = C2131746F8D73742230AEF22 /* pebble-js-app.js */; };
 /* End PBXBuildFile section */
@@ -46,9 +47,11 @@
 		C2131394ECB385B21C51405D /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		C21313D9A9AA90EAE2A0282D /* smallicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smallicon.png; sourceTree = "<group>"; };
 		C21314DE20433F3065B6252F /* appinfo.auto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = appinfo.auto.c; sourceTree = "<group>"; };
+		C21314FFA7D096BB0D75FE2E /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = util.c; sourceTree = "<group>"; };
 		C2131566409AD1BE3F22BFBD /* bus_detail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bus_detail.h; sourceTree = "<group>"; };
 		C21315F75BCDDAC64E2D8389 /* appinfo.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = appinfo.json; sourceTree = "<group>"; };
 		C2131695350CBD8DCA1A4CC8 /* pebble-app.map */ = {isa = PBXFileReference; lastKnownFileType = file.map; path = "pebble-app.map"; sourceTree = "<group>"; };
+		C21316A71FD020DD94725FD3 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		C21316AF86694DDE4F7A64B6 /* PebbleGRT */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PebbleGRT; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2131746F8D73742230AEF22 /* pebble-js-app.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "pebble-js-app.js"; sourceTree = "<group>"; };
 		C21317CF9171853927544EA0 /* pebble-app.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "pebble-app.bin"; sourceTree = "<group>"; };
@@ -117,6 +120,8 @@
 				C21311BCD6F2F25396DC485E /* nearby_buses.c */,
 				C2131E1B5518BA2BF1ECFF48 /* nearby_buses.h */,
 				C2131C75CA8947DB1EFAF2DC /* message_types.h */,
+				C21316A71FD020DD94725FD3 /* util.h */,
+				C21314FFA7D096BB0D75FE2E /* util.c */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -245,6 +250,7 @@
 				C213144F239E94537A8788EE /* nearby_buses.c in Sources */,
 				C2131A3FDEBE6E7EF7A7D060 /* appinfo.auto.c in Sources */,
 				C2131A48069BFED9AF757E12 /* pebble-js-app.js in Sources */,
+				C213197DDEF97CA1E26858B3 /* util.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

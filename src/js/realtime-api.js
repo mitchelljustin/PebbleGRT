@@ -29,7 +29,7 @@ GRT.filterCloseBuses = function(myLoc, allBuses, limit) {
   });
   closeBuses = closeBuses.slice(0, limit);
   return closeBuses;
-}
+};
 
 GRT.getClosestBuses = function (myLoc, limit, callback) {
   var request = new XMLHttpRequest();
@@ -47,4 +47,29 @@ GRT.getClosestBuses = function (myLoc, limit, callback) {
   };
   console.log("Sending request to http://realtimemap.grt.ca/Map/GetVehicles");
   request.send();
-}
+};
+
+GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
+    var request = new XMLHttpRequest();
+    request.open("GET", "http://realtimemap.grt.ca/Stop/GetBusInfo?VehicleId="+vehicleId+"&TripId="+tripId);
+    request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
+    request.onload = function () {
+        if (request.status == 200) {
+            var stops = JSON.parse(request.responseText)["stopTimes"];
+            var nextStop = stops[0];
+            var delaySeconds = nextStop["Delay"] * -2;
+            var delaySecondsString = (delaySeconds % 60) + "";
+            if (delaySecondsString.length == 1) {
+                delaySecondsString = "0" + delaySecondsString;
+            }
+            var delayMinutesStrings = Math.floor(delaySeconds / 60);
+            var delayString = delayMinutesStrings + ":" + delaySecondsString;
+            callback({
+                delay: delayString
+            });
+        } else {
+            console.log("Error with request: " + request.statusText);
+        }
+    };
+    request.send();
+};

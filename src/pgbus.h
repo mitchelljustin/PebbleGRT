@@ -1,7 +1,7 @@
 #define PGBusDistanceMaxStringLength 10
-#define PGBusDescriptionMaxStringLength 50
-#define PGBusVehicleIdMaxStringLength 6
-#define PGBusTripIdMaxStringLength 9
+#define PGBusDescriptionMaxStringLength 60
+#define PGBusVehicleIdMaxStringLength 15
+#define PGBusTripIdMaxStringLength 15
 
 struct PGBus {
   char distance     [PGBusDistanceMaxStringLength];
@@ -11,6 +11,7 @@ struct PGBus {
 };
 
 struct PGBus *pgbus_create();
+
 void pgbus_destroy(struct PGBus *);
 
 struct PGBus *pgbus_parse_from_string(const char *);

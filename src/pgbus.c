@@ -24,9 +24,9 @@ struct PGBus *pgbus_parse_from_string(const char *source) {
     parts[part_index] = &source_cpy[source_idx];
   }
   struct PGBus *bus = pgbus_create();
-  strncpy(bus->distance,    parts[0],   PGBusDistanceMaxStringLength);
-  strncpy(bus->description, parts[1],   PGBusDescriptionMaxStringLength);
-  strncpy(bus->vehicleId,   parts[2],   PGBusVehicleIdMaxStringLength);
-  strncpy(bus->tripId,      parts[3],   PGBusTripIdMaxStringLength);
+  strncpy(bus->distance,    parts[0], PGBusDistanceMaxStringLength);
+  strncpy(bus->description, parts[1], PGBusDescriptionMaxStringLength);
+  strncpy(bus->tripId,      parts[2], PGBusTripIdMaxStringLength);
+  strncpy(bus->vehicleId,   parts[3], PGBusVehicleIdMaxStringLength);
   return bus;
 }

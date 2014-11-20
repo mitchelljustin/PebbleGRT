@@ -31,72 +31,104 @@ function extendWithArray(obj, array, startIndex) {
 var DEFAULT_BUS_DISTANCE_LIMIT = 20; // km
 var MAX_NUM_CLOSE_BUSES = 6;
 
-var TYPE_VALUE_CLOSE_BUSES = 0;
+var PGTypeReportCloseBuses = 0;
+var PGTypeBusDetail = 1;
 
 function getGeoLocation(onSuccess) {
-  var locationOptions = {
-    enableHighAccuracy: true,
-    maximumAge: 10000,
-    timeout: 10000
-  };
-  navigator.geolocation.getCurrentPosition(function(pos) {
-    var coords = pos.coords;
-    onSuccess({
-      lat: coords.latitude,
-      lon: coords.longitude
-    });
-  }, locationError, locationOptions);
+    var locationOptions = {
+        enableHighAccuracy: true,
+        maximumAge: 10000,
+        timeout: 10000
+    };
+    navigator.geolocation.getCurrentPosition(function (pos) {
+        var coords = pos.coords;
+        onSuccess({
+            lat: coords.latitude,
+            lon: coords.longitude
+        });
+    }, locationError, locationOptions);
 }
 
 function locationError(err) {
-  console.log('location error (' + err.code + '): ' + err.message);
+    console.log('location error (' + err.code + '): ' + err.message);
 }
 
 function encodeBus(bus) {
-  return [
-    bus.distance + "km",
-    bus.description,
-    bus.tripId,
-    bus.vehicleId
-  ].join(";");
+    return [
+        bus.distance + "km",
+        bus.description,
+        bus.tripId,
+        bus.vehicleId
+    ].join(";");
 }
 
 function reportClosestBuses() {
-  function closeBusesCallback(buses) {
-    var busStrings = buses.map(encodeBus);
+    function closeBusesCallback(buses) {
+        var busStrings = buses.map(encodeBus);
 
-    console.log("Sending to Pebble:");
-    for (index in busStrings) {
-      console.log("["+index + "] \""+ busStrings[index]+"\"");
+        console.log("Sending to Pebble:");
+        for (index in busStrings) {
+            console.log("[" + index + "] \"" + busStrings[index] + "\"");
+        }
+
+        var msg = {
+            "PGKeyMessageType": PGTypeReportCloseBuses
+        };
+        extendWithArray(msg, busStrings, 1);
+
+        console.log("Sending message: " + JSON.stringify(msg));
+
+        Pebble.sendAppMessage(msg,
+            function () {
+                console.log("Message sent.");
+            },
+            function () {
+                console.log("ERROR: could not send message: \n" + JSON.stringify(msg));
+            });
     }
 
-    var msg = {
-      "PGKeyMessageType": TYPE_VALUE_CLOSE_BUSES
-    };
-    extendWithArray(msg, busStrings, 1);
-
-    console.log("Sending message: "+JSON.stringify(msg));
-
-    Pebble.sendAppMessage(msg,
-      function () {
-        console.log("Message sent.");
-      },
-      function () {
-        console.log("ERROR: could not send message: \n" + JSON.stringify(msg));
-      });
-  }
-
-  getGeoLocation(function(myLoc) {
-    GRT.getClosestBuses(myLoc, MAX_NUM_CLOSE_BUSES, closeBusesCallback);
-  });
+    getGeoLocation(function (myLoc) {
+        GRT.getClosestBuses(myLoc, MAX_NUM_CLOSE_BUSES, closeBusesCallback);
+    });
 }
 
-// Listen for when an AppMessage is received
+function busDetail(vehicleId, tripId) {
+    console.log("Getting bus detail for vehicleId="+vehicleId+" tripId="+tripId);
+
+    function busInfoCallback(info) {
+        var msg = {};
+        msg["PGKeyMessageType"] = PGTypeBusDetail;
+        msg["PGKeyBusDetailDelay"] = info.delay;
+
+        console.log("Sending message: "+JSON.stringify(msg));
+
+        Pebble.sendAppMessage(msg,
+            function () {
+                console.log("Message sent.");
+            },
+            function () {
+                console.log("ERROR: could not send message: \n" + JSON.stringify(msg));
+            });
+    }
+
+    getGeoLocation(function (myLoc) {
+        GRT.getBusInfo(myLoc, vehicleId, tripId, busInfoCallback);
+    });
+}
+
 Pebble.addEventListener('appmessage',
-  function(e) {
-    console.log("AppMessage received: "+ JSON.stringify(e.payload));
-    reportClosestBuses();
-  }
+    function (e) {
+        var data = e.payload;
+        console.log("AppMessage received: " + JSON.stringify(data));
+        switch (data["PGKeyMessageType"]) {
+            case PGTypeReportCloseBuses:
+                reportClosestBuses();
+                break;
+            case PGTypeBusDetail:
+                busDetail(data["PGKeyVehicleId"], data["PGKeyTripId"]);
+                break;
+        }
+    }
 );
 var GRT = {};
 
@@ -129,7 +161,7 @@ GRT.filterCloseBuses = function(myLoc, allBuses, limit) {
   });
   closeBuses = closeBuses.slice(0, limit);
   return closeBuses;
-}
+};
 
 GRT.getClosestBuses = function (myLoc, limit, callback) {
   var request = new XMLHttpRequest();
@@ -147,4 +179,31 @@ GRT.getClosestBuses = function (myLoc, limit, callback) {
   };
   console.log("Sending request to http://realtimemap.grt.ca/Map/GetVehicles");
   request.send();
-}
+};
+
+GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
+    var request = new XMLHttpRequest();
+    request.open("GET", "http://realtimemap.grt.ca/Stop/GetBusInfo?" +
+        "VehicleId="+encodeURIComponent(vehicleId)+"&" +
+        "TripId="+encodeURIComponent(tripId));
+    request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
+    request.onload = function () {
+        if (request.status == 200) {
+            var stops = JSON.parse(request.responseText)["stopTimes"];
+            var nextStop = stops[0];
+            var delaySeconds = nextStop["Delay"] * -2;
+            var delaySecondsString = (delaySeconds % 60) + "";
+            if (delaySecondsString.length == 1) {
+                delaySecondsString = "0" + delaySecondsString;
+            }
+            var delayMinutesStrings = Math.floor(delaySeconds / 60);
+            var delayString = delayMinutesStrings + ":" + delaySecondsString;
+            callback({
+                delay: delayString
+            });
+        } else {
+            console.log("Error with request: " + request.statusText);
+        }
+    };
+    request.send();
+};
