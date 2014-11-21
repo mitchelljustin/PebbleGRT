@@ -73,12 +73,10 @@ GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
             var delayTotalSeconds = nextStop["Delay"] * -2;
             var delayString = makeDelayString(delayTotalSeconds);
             var stopsForPebble = stops.map(function (stop) {
-                var minutes = Math.round(stop["Minutes"] + (delayTotalSeconds / 60));
-                var minString;
-                if (minutes < 0) {
-                    minString = "Late"
-                } else if (minutes == 0) {
-                    minString = "< 1 minute"
+                var minutes = stop["Minutes"] + Math.floor(delayTotalSeconds / 60);
+                var minString = "N/A";
+                if (minutes == 0) {
+                    minString = "Less than a minute"
                 } else if (minutes == 1) {
                     minString = "1 minute"
                 } else {

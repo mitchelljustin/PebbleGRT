@@ -10,7 +10,7 @@
 #define NUM_SECTIONS 2
 #define STOP_BUFFER_SIZE 100
 #define DELAY_BUFFER_SIZE 80
-static const int REFRESH_INTERVAL = 27;
+static const int REFRESH_INTERVAL = 8;
 
 static Window *s_window;
 
