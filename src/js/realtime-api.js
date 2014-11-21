@@ -49,6 +49,17 @@ GRT.getClosestBuses = function (myLoc, limit, callback) {
     request.send();
 };
 
+function makeDelayString(delayTotalSeconds) {
+    var delayMinutes = Math.floor(delayTotalSeconds / 60);
+    var delaySeconds = Math.round(((delayTotalSeconds / 60) - delayMinutes) * 60);
+    var delayString = "";
+    if (delayMinutes.length != 0) {
+        delayString += delayMinutes + "m "
+    }
+    delayString += delaySeconds + "s";
+    return delayString;
+}
+
 GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
     var request = new XMLHttpRequest();
     request.open("GET", "http://realtimemap.grt.ca/Stop/GetBusInfo?VehicleId=" + vehicleId + "&TripId=" + tripId);
@@ -58,15 +69,22 @@ GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
             var stops = JSON.parse(request.responseText)["stopTimes"];
             var nextStop = stops[0];
             var delayTotalSeconds = nextStop["Delay"] * -2;
-            var delayMinutes = Math.floor(delayTotalSeconds / 60);
-            var delaySeconds = Math.round(((delayTotalSeconds / 60) - delayMinutes) * 60);
-            var delayString = "";
-            if (delayMinutes.length != 0) {
-                delayString += delayMinutes + "m "
-            }
-            delayString += delaySeconds + "s";
+            var delayString = makeDelayString(delayTotalSeconds);
+            var stopsForPebble = stops.map(function (stop) {
+                var minutes = stop["Minutes"];
+                var minString;
+                if (minutes < 0) {
+                    minString = "Late"
+                } else if (minutes == 0) {
+                    minString = "Due"
+                } else {
+                    minString = minutes + " minutes"
+                }
+                return minString + ";" + stop["Name"];
+            });
             callback({
-                delay: delayString
+                delay: delayString,
+                stops: stopsForPebble
             });
         } else {
             console.log("Error with request: " + request.statusText);

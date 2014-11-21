@@ -74,6 +74,7 @@ function busDetail(vehicleId, tripId) {
         var msg = {};
         msg["PGKeyMessageType"] = 1;
         msg["PGKeyBusDetailDelay"] = info.delay;
+        extendWithArray(msg, info.stops, 2);
 
         console.log("Sending message: " + JSON.stringify(msg));
 

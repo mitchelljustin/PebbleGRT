@@ -3,17 +3,17 @@
 #include "bus_detail.h"
 #include "pgbus.h"
 
-#define NUM_MENU_ITEMS 6
+#define NUM_INFO_MENU_ITEMS 6
 static const int REFRESH_INTERVAL = 27;
 
 static Window *s_window;
 
-static SimpleMenuItem s_menu_items[NUM_MENU_ITEMS];
-static struct PGBus *s_buses[NUM_MENU_ITEMS] = {NULL};
+static SimpleMenuItem s_menu_items[NUM_INFO_MENU_ITEMS];
+static struct PGBus *s_buses[NUM_INFO_MENU_ITEMS] = {NULL};
 
 static SimpleMenuSection s_default_menu_section = {
     .items = s_menu_items,
-    .num_items = NUM_MENU_ITEMS,
+    .num_items = NUM_INFO_MENU_ITEMS,
     .title = "Nearby Buses"
 };
 
@@ -53,7 +53,7 @@ static void window_unload(Window *window)
     app_message_deregister_callbacks();
     tick_timer_service_unsubscribe();
 
-    for (int i = 0; i < NUM_MENU_ITEMS; i++) {
+    for (int i = 0; i < NUM_INFO_MENU_ITEMS; i++) {
         if (s_buses[i] != NULL) {
             pgbus_destroy(s_buses[i]);
             s_buses[i] = NULL;
@@ -91,11 +91,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 
     while (t != NULL) {
         switch (t->key) {
-            case 0:
-                APP_LOG(APP_LOG_LEVEL_INFO, "Received: PBKeyMessageType = %d", (int) t->value->int32);
+            case PGKeyMessageType:
                 break;
             default: {
-                APP_LOG(APP_LOG_LEVEL_INFO, "Bus %lu received with value %s", t->key, t->value->cstring);
                 int index = t->key - 1;
                 struct PGBus **bus = &s_buses[index];
                 if (*bus != NULL) {
