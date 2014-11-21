@@ -151,7 +151,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 static void split_bus_bearing()
 {
     s_bus_bearing = s_bus.description;
-    while (*s_bus_bearing != ' ') {
+    while (*s_bus_bearing != ' ' && *s_bus_bearing != '\0') {
         s_bus_bearing++;
     }
     *s_bus_bearing = '\0';
