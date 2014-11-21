@@ -15,7 +15,7 @@ static const int REFRESH_INTERVAL = 27;
 static Window *s_window;
 
 static struct PGBus s_bus;
-static char *s_bus_direction_desc = NULL;
+static char *s_bus_bearing = NULL;
 
 static char *s_delay_subtitle_buf = NULL;
 
@@ -57,9 +57,14 @@ static void send_bus_detail_msg()
 
 static void window_load(Window *window)
 {
+    s_delay_subtitle_buf = malloc(DELAY_BUFFER_SIZE * sizeof(char));
+    for (int i = 0; i < NUM_STOP_MENU_ITEMS; ++i) {
+        s_stop_buffers[i] = malloc(STOP_BUFFER_SIZE * sizeof(char));
+    }
+
     s_info_menu_items[0] = (SimpleMenuItem) {
         .title = s_bus.description,
-        .subtitle = s_bus_direction_desc
+        .subtitle = s_bus_bearing
     };
     s_info_menu_items[1] = (SimpleMenuItem) {
         .title = "Loading..",
@@ -84,8 +89,14 @@ static void window_load(Window *window)
 static void window_unload(Window *window)
 {
     free(s_delay_subtitle_buf);
+    SimpleMenuItem empty_item = { NULL, NULL, NULL, NULL };
+
     for (int i = 0; i < NUM_STOP_MENU_ITEMS; ++i) {
         free(s_stop_buffers[i]);
+        s_stop_menu_items[i] = empty_item;
+    }
+    for (int i = 0; i < NUM_INFO_MENU_ITEMS; ++i) {
+        s_info_menu_items[i] = empty_item;
     }
 
     simple_menu_layer_destroy(s_menu_layer);
@@ -137,26 +148,21 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     layer_mark_dirty(simple_menu_layer_get_layer(s_menu_layer));
 }
 
-static void parse_bus_direction_desc()
+static void split_bus_bearing()
 {
-    s_bus_direction_desc = s_bus.description;
-    while (*s_bus_direction_desc != ' ') {
-        s_bus_direction_desc++;
+    s_bus_bearing = s_bus.description;
+    while (*s_bus_bearing != ' ') {
+        s_bus_bearing++;
     }
-    *s_bus_direction_desc = '\0';
-    s_bus_direction_desc++;
+    *s_bus_bearing = '\0';
+    s_bus_bearing++;
 }
 
 Window *create_bus_detail_window(struct PGBus *bus)
 {
-    s_delay_subtitle_buf = malloc(DELAY_BUFFER_SIZE * sizeof(char));
-    for (int i = 0; i < NUM_STOP_MENU_ITEMS; ++i) {
-        s_stop_buffers[i] = malloc(STOP_BUFFER_SIZE * sizeof(char));
-    }
-    
     s_window = window_create();
     memcpy(&s_bus, bus, sizeof(struct PGBus));
-    parse_bus_direction_desc();
+    split_bus_bearing();
 
     window_set_window_handlers(s_window, (WindowHandlers) {
         .load = window_load,
