@@ -62,7 +62,9 @@ function makeDelayString(delayTotalSeconds) {
 
 GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
     var request = new XMLHttpRequest();
-    request.open("GET", "http://realtimemap.grt.ca/Stop/GetBusInfo?VehicleId=" + vehicleId + "&TripId=" + tripId);
+    request.open("GET", "http://realtimemap.grt.ca/Stop/GetBusInfo?" +
+        "VehicleId=" + encodeURIComponent(vehicleId) +
+        "&TripId=" + encodeURIComponent(tripId));
     request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
     request.onload = function () {
         if (request.status == 200) {
@@ -71,12 +73,14 @@ GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
             var delayTotalSeconds = nextStop["Delay"] * -2;
             var delayString = makeDelayString(delayTotalSeconds);
             var stopsForPebble = stops.map(function (stop) {
-                var minutes = stop["Minutes"];
+                var minutes = Math.round(stop["Minutes"] + (delayTotalSeconds / 60));
                 var minString;
                 if (minutes < 0) {
                     minString = "Late"
                 } else if (minutes == 0) {
-                    minString = "Due"
+                    minString = "< 1 minute"
+                } else if (minutes == 1) {
+                    minString = "1 minute"
                 } else {
                     minString = minutes + " minutes"
                 }
