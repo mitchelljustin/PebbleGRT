@@ -76,7 +76,7 @@ GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
                 var minutes = stop["Minutes"] + Math.floor(delayTotalSeconds / 60);
                 var minString = "N/A";
                 if (minutes == 0) {
-                    minString = "Less than a minute"
+                    minString = "< 1 minute"
                 } else if (minutes == 1) {
                     minString = "1 minute"
                 } else {
