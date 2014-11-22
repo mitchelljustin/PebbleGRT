@@ -39,7 +39,11 @@ static char *s_stop_buffers[NUM_STOP_MENU_ITEMS] = { NULL };
 
 static SimpleMenuSection s_menu_sections[NUM_SECTIONS];
 
+static char *const c_loading_text = "Loading..";
+
 static SimpleMenuLayer *s_menu_layer;
+
+static bool s_first_message_received;
 
 static void send_bus_detail_msg()
 {
@@ -57,9 +61,14 @@ static void send_bus_detail_msg()
 
 static void window_load(Window *window)
 {
+    s_first_message_received = false;
+    
     s_delay_subtitle_buf = malloc(DELAY_BUFFER_SIZE * sizeof(char));
+    strcpy(s_delay_subtitle_buf, c_loading_text);
+
     for (int i = 0; i < NUM_STOP_MENU_ITEMS; ++i) {
         s_stop_buffers[i] = malloc(STOP_BUFFER_SIZE * sizeof(char));
+        (&s_stop_menu_items[i])->title = c_loading_text;
     }
 
     s_info_menu_items[0] = (SimpleMenuItem) {
@@ -67,10 +76,10 @@ static void window_load(Window *window)
         .subtitle = s_bus_bearing
     };
     s_info_menu_items[1] = (SimpleMenuItem) {
-        .title = "Loading..",
-        .subtitle = NULL
+        .title = "Delay",
+        .subtitle = s_delay_subtitle_buf
     };
-
+    
     s_menu_sections[0] = s_info_menu_section;
     s_menu_sections[1] = s_stop_menu_section;
 
@@ -88,6 +97,7 @@ static void window_load(Window *window)
 
 static void window_unload(Window *window)
 {
+    s_first_message_received = false;
     free(s_delay_subtitle_buf);
     SimpleMenuItem empty_item = { NULL, NULL, NULL, NULL };
 
@@ -122,18 +132,13 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
             case PGKeyMessageType:
                 break;
             case PGKeyBusDetailDelay: {
-                SimpleMenuItem *delay_item = &s_info_menu_items[1];
-                if (delay_item->subtitle == NULL) {
-                    delay_item->title = "Delay";
-                    delay_item->subtitle = s_delay_subtitle_buf;
-                }
                 strncpy(s_delay_subtitle_buf, t->value->cstring, DELAY_BUFFER_SIZE);
                 break;
             }
             default: {
-                int index = t->key - 2;
-                SimpleMenuItem *item = &s_stop_menu_items[index];
-                char *stop_buf = s_stop_buffers[index];
+                int stop_index = t->key - 2;
+                SimpleMenuItem *item = &s_stop_menu_items[stop_index];
+                char *stop_buf = s_stop_buffers[stop_index];
                 strncpy(stop_buf, t->value->cstring, STOP_BUFFER_SIZE);
                 const char *parts[2];
                 split_semi_delimited(stop_buf, parts);
@@ -148,9 +153,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     layer_mark_dirty(simple_menu_layer_get_layer(s_menu_layer));
 }
 
-static void split_bus_bearing()
+static void split_bus_bearing(char *bus_description)
 {
-    s_bus_bearing = s_bus.description;
+    s_bus_bearing = bus_description;
     while (*s_bus_bearing != ' ' && *s_bus_bearing != '\0') {
         s_bus_bearing++;
     }
@@ -161,8 +166,9 @@ static void split_bus_bearing()
 Window *create_bus_detail_window(struct PGBus *bus)
 {
     s_window = window_create();
+
     memcpy(&s_bus, bus, sizeof(struct PGBus));
-    split_bus_bearing();
+    split_bus_bearing(s_bus.description);
 
     window_set_window_handlers(s_window, (WindowHandlers) {
         .load = window_load,

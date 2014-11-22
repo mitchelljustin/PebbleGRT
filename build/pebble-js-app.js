@@ -1,5 +1,5 @@
 function degToRad(deg) {
-  return deg * 0.0174532925;
+    return deg * 0.0174532925;
 }
 
 // Source: http://stackoverflow.com/a/20642344
@@ -9,19 +9,19 @@ function geoDistance(lat1, lon1, lat2, lon2) {
     var dLat = degToRad(lat2 - lat1);
     var dLon = degToRad(lon2 - lon1);
     var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(degToRad(lat1)) * Math.cos(degToRad(lat2)) *
-                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        Math.cos(degToRad(lat1)) * Math.cos(degToRad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
     return d;
 }
 
 function extendWithArray(obj, array, startIndex) {
-  for (var i = 0; i < array.length; i++) {
-    var key = "" + (i + startIndex);
-    var value = array[i];
-    obj[key] = value;
-  }
+    for (var i = 0; i < array.length; i++) {
+        var key = "" + (i + startIndex);
+        var value = array[i];
+        obj[key] = value;
+    }
 }
 // type location: {
 //    lat: string,
@@ -93,14 +93,15 @@ function reportClosestBuses() {
 }
 
 function busDetail(vehicleId, tripId) {
-    console.log("Getting bus detail for vehicleId="+vehicleId+" tripId="+tripId);
+    console.log("Getting bus detail for vehicleId=" + vehicleId + " tripId=" + tripId);
 
     function busInfoCallback(info) {
         var msg = {};
         msg["PGKeyMessageType"] = 1;
         msg["PGKeyBusDetailDelay"] = info.delay;
+        extendWithArray(msg, info.stops, 2);
 
-        console.log("Sending message: "+JSON.stringify(msg));
+        console.log("Sending message: " + JSON.stringify(msg));
 
         Pebble.sendAppMessage(msg,
             function () {
@@ -132,73 +133,93 @@ Pebble.addEventListener('appmessage',
 );
 var GRT = {};
 
-GRT.Bus = function(info) {
-  this.description = info["Trip"]["Headsign"];
-  this.tripId = info["TripId"];
-  this.vehicleId = info["VehicleId"];
+GRT.Bus = function (info) {
+    this.description = info["Trip"]["Headsign"];
+    this.tripId = info["TripId"];
+    this.vehicleId = info["VehicleId"];
 };
 
-GRT.filterCloseBuses = function(myLoc, allBuses, limit) {
-  var closeBuses = [];
-  for (busIndex in allBuses) {
-    var busInfo = allBuses[busIndex];
-    var lat = busInfo["Latitude"];
-    var lon = busInfo["Longitude"];
-    var distance = geoDistance(lat, lon, myLoc.lat, myLoc.lon);
-    if (distance < DEFAULT_BUS_DISTANCE_LIMIT) {
-      var bus = new GRT.Bus(busInfo);
-      bus.distance = Math.round(distance * 10) / 10;
-      closeBuses.push(bus);
+GRT.filterCloseBuses = function (myLoc, allBuses, limit) {
+    var closeBuses = [];
+    for (busIndex in allBuses) {
+        var busInfo = allBuses[busIndex];
+        var lat = busInfo["Latitude"];
+        var lon = busInfo["Longitude"];
+        var distance = geoDistance(lat, lon, myLoc.lat, myLoc.lon);
+        if (distance < DEFAULT_BUS_DISTANCE_LIMIT) {
+            var bus = new GRT.Bus(busInfo);
+            bus.distance = Math.round(distance * 10) / 10;
+            closeBuses.push(bus);
+        }
     }
-  }
-  closeBuses.sort(function(b1, b2) {
-    if (b1.distance < b2.distance) {
-      return -1;
-    } else if (b1.distance > b2.distance) {
-      return 1;
-    }
-    return 0;
-  });
-  closeBuses = closeBuses.slice(0, limit);
-  return closeBuses;
+    closeBuses.sort(function (b1, b2) {
+        if (b1.distance < b2.distance) {
+            return -1;
+        } else if (b1.distance > b2.distance) {
+            return 1;
+        }
+        return 0;
+    });
+    closeBuses = closeBuses.slice(0, limit);
+    return closeBuses;
 };
 
 GRT.getClosestBuses = function (myLoc, limit, callback) {
-  var request = new XMLHttpRequest();
-  request.open("GET", "http://realtimemap.grt.ca/Map/GetVehicles");
-  request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
-  request.onload = function() {
-    if (request.status == 200) {
-      var buses = JSON.parse(request.responseText);
-      console.log("Parsing "+buses.length +" buses");
-      var closeBuses = GRT.filterCloseBuses(myLoc, buses, limit);
-      callback(closeBuses);
-    } else {
-      console.log("Error with request: " + request.statusText);
-    }
-  };
-  console.log("Sending request to http://realtimemap.grt.ca/Map/GetVehicles");
-  request.send();
+    var request = new XMLHttpRequest();
+    request.open("GET", "http://realtimemap.grt.ca/Map/GetVehicles");
+    request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
+    request.onload = function () {
+        if (request.status == 200) {
+            var buses = JSON.parse(request.responseText);
+            console.log("Parsing " + buses.length + " buses");
+            var closeBuses = GRT.filterCloseBuses(myLoc, buses, limit);
+            callback(closeBuses);
+        } else {
+            console.log("Error with request: " + request.statusText);
+        }
+    };
+    console.log("Sending request to http://realtimemap.grt.ca/Map/GetVehicles");
+    request.send();
 };
+
+function makeDelayString(delayTotalSeconds) {
+    var delayMinutes = Math.floor(delayTotalSeconds / 60);
+    var delaySeconds = Math.round(((delayTotalSeconds / 60) - delayMinutes) * 60);
+    var delayString = "";
+    if (delayMinutes.length != 0) {
+        delayString += delayMinutes + "m "
+    }
+    delayString += delaySeconds + "s";
+    return delayString;
+}
 
 GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
     var request = new XMLHttpRequest();
-    request.open("GET", "http://realtimemap.grt.ca/Stop/GetBusInfo?VehicleId="+vehicleId+"&TripId="+tripId);
+    request.open("GET", "http://realtimemap.grt.ca/Stop/GetBusInfo?" +
+        "VehicleId=" + encodeURIComponent(vehicleId) +
+        "&TripId=" + encodeURIComponent(tripId));
     request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
     request.onload = function () {
         if (request.status == 200) {
             var stops = JSON.parse(request.responseText)["stopTimes"];
             var nextStop = stops[0];
             var delayTotalSeconds = nextStop["Delay"] * -2;
-            var delayMinutes = Math.floor(delayTotalSeconds / 60);
-            var delaySeconds = Math.round(((delayTotalSeconds / 60) - delayMinutes) * 60);
-            var delayString = "";
-            if (delayMinutes.length != 0) {
-                delayString += delayMinutes + "m "
-            }
-            delayString += delaySeconds + "s";
+            var delayString = makeDelayString(delayTotalSeconds);
+            var stopsForPebble = stops.map(function (stop) {
+                var minutes = stop["Minutes"] + Math.floor(delayTotalSeconds / 60);
+                var minString = "N/A";
+                if (minutes == 0) {
+                    minString = "Less than a minute"
+                } else if (minutes == 1) {
+                    minString = "1 minute"
+                } else {
+                    minString = minutes + " minutes"
+                }
+                return minString + ";" + stop["Name"];
+            });
             callback({
-                delay: delayString
+                delay: delayString,
+                stops: stopsForPebble
             });
         } else {
             console.log("Error with request: " + request.statusText);
