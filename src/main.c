@@ -1,9 +1,6 @@
 #include <pebble.h>
-#include "nearby_buses.h"
 
 static Window *s_main_window;
-
-static void open_nearby_buses(int index, void *context);
 
 static SimpleMenuItem s_main_menu_items[1];
 
@@ -33,17 +30,10 @@ static void main_window_unload(Window *window)
     simple_menu_layer_destroy(s_main_menu_layer);
 }
 
-static void open_nearby_buses(int index, void *context)
-{
-    Window *nearby_buses_window = create_nearby_buses_window();
-    window_stack_push(nearby_buses_window, true);
-}
-
 static void setup_main_menu_items()
 {
     s_main_menu_items[0] = (SimpleMenuItem) {
-        .title = "Nearby buses",
-        .callback = open_nearby_buses
+        .title = "Nearby buses"
     };
 }
 
@@ -73,4 +63,5 @@ int main(void)
     init();
     app_event_loop();
     deinit();
+    return 0;
 }
