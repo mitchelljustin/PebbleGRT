@@ -1,4 +1,5 @@
 #include <pebble.h>
+#include "nearby_buses.h"
 
 static struct {
    SimpleMenuLayer *menu_layer;
@@ -27,7 +28,8 @@ static void init() {
    app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 
    S.actions_menu_items[0] = (SimpleMenuItem) {
-      .title = "Nearby Buses"
+      .title = "Nearby Buses",
+      .callback = push_nearby_buses_window
    };
    S.actions_menu_items[1] = (SimpleMenuItem) {
       .title = "Nearby Stops"
