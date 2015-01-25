@@ -706,110 +706,103 @@ LOAD /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-
  .pbl_header    0x0000000000000000       0x82 appinfo.auto.c.8.o
                 0x0000000000000000                __pbl_app_info
 
-.text           0x0000000000000084      0x1c1
+.text           0x0000000000000084      0x1ec
  *(.text)
  .text          0x0000000000000084       0x14 /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
  *(.text.*)
  .text.main_window_unload
                 0x0000000000000098       0x10 src/main.c.8.o
  .text.main_window_load
-                0x00000000000000a8       0x4c src/main.c.8.o
+                0x00000000000000a8       0x48 src/main.c.8.o
  .text.startup.main
-                0x00000000000000f4       0x88 src/main.c.8.o
-                0x00000000000000f4                main
+                0x00000000000000f0       0xa8 src/main.c.8.o
+                0x00000000000000f0                main
  .text.app_event_loop
-                0x000000000000017c        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x000000000000017c                app_event_loop
+                0x0000000000000198        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000198                app_event_loop
  .text.app_message_open
-                0x0000000000000188        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000188                app_message_open
+                0x00000000000001a4        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000001a4                app_message_open
  .text.layer_add_child
-                0x0000000000000194        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000194                layer_add_child
+                0x00000000000001b0        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000001b0                layer_add_child
  .text.layer_get_bounds
-                0x00000000000001a0        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000001a0                layer_get_bounds
- .text.memset   0x00000000000001ac        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000001ac                memset
+                0x00000000000001bc        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000001bc                layer_get_bounds
+ .text.memset   0x00000000000001c8        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000001c8                memset
  .text.simple_menu_layer_create
-                0x00000000000001b8        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000001b8                simple_menu_layer_create
+                0x00000000000001d4        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000001d4                simple_menu_layer_create
  .text.simple_menu_layer_destroy
-                0x00000000000001c4        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000001c4                simple_menu_layer_destroy
+                0x00000000000001e0        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000001e0                simple_menu_layer_destroy
  .text.simple_menu_layer_get_layer
-                0x00000000000001d0        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000001d0                simple_menu_layer_get_layer
+                0x00000000000001ec        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000001ec                simple_menu_layer_get_layer
  .text.window_create
-                0x00000000000001dc        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000001dc                window_create
+                0x00000000000001f8        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x00000000000001f8                window_create
  .text.window_destroy
-                0x00000000000001e8        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000001e8                window_destroy
+                0x0000000000000204        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000204                window_destroy
  .text.window_get_root_layer
-                0x00000000000001f4        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x00000000000001f4                window_get_root_layer
+                0x0000000000000210        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000210                window_get_root_layer
  .text.window_set_window_handlers
-                0x0000000000000200        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000200                window_set_window_handlers
+                0x000000000000021c        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x000000000000021c                window_set_window_handlers
  .text.window_stack_push
-                0x000000000000020c        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x000000000000020c                window_stack_push
+                0x0000000000000228        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000228                window_stack_push
  .text.app_message_inbox_size_maximum
-                0x0000000000000218        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000218                app_message_inbox_size_maximum
+                0x0000000000000234        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000234                app_message_inbox_size_maximum
  .text.app_message_outbox_size_maximum
-                0x0000000000000224        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
-                0x0000000000000224                app_message_outbox_size_maximum
+                0x0000000000000240        0xc /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+                0x0000000000000240                app_message_outbox_size_maximum
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x0000000000000230       0x15 src/main.c.8.o
+                0x000000000000024c       0x24 src/main.c.8.o
 
-.glue_7         0x0000000000000248        0x0
+.glue_7         0x0000000000000270        0x0
  .glue_7        0x0000000000000000        0x0 linker stubs
 
-.glue_7t        0x0000000000000248        0x0
+.glue_7t        0x0000000000000270        0x0
  .glue_7t       0x0000000000000000        0x0 linker stubs
 
-.vfp11_veneer   0x0000000000000248        0x0
+.vfp11_veneer   0x0000000000000270        0x0
  .vfp11_veneer  0x0000000000000000        0x0 linker stubs
 
-.v4_bx          0x0000000000000248        0x0
+.v4_bx          0x0000000000000270        0x0
  .v4_bx         0x0000000000000000        0x0 linker stubs
 
-.iplt           0x0000000000000248        0x0
+.iplt           0x0000000000000270        0x0
  .iplt          0x0000000000000000        0x0 /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
 
-.rel.dyn        0x0000000000000248        0x0
+.rel.dyn        0x0000000000000270        0x0
  .rel.iplt      0x0000000000000000        0x0 /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
 
-.data           0x0000000000000248       0x10
+.data           0x0000000000000270       0x10
  *(.data)
- .data          0x0000000000000248        0x0 /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crti.o
- .data          0x0000000000000248        0x4 /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
-                0x0000000000000248                __dso_handle
- .data          0x000000000000024c        0x0 src/main.c.8.o
- .data          0x000000000000024c        0x0 appinfo.auto.c.8.o
- .data          0x000000000000024c        0x0 /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
- .data          0x000000000000024c        0x0 /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtend.o
- .data          0x000000000000024c        0x0 /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtn.o
+ .data          0x0000000000000270        0x0 /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crti.o
+ .data          0x0000000000000270        0x4 /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
+                0x0000000000000270                __dso_handle
+ .data          0x0000000000000274        0xc src/main.c.8.o
+ .data          0x0000000000000280        0x0 appinfo.auto.c.8.o
+ .data          0x0000000000000280        0x0 /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/lib/libpebble.a(tmpu_Elzfpebble.o)
+ .data          0x0000000000000280        0x0 /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtend.o
+ .data          0x0000000000000280        0x0 /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtn.o
  *(.data.*)
- .data.rel.local.s_main_menu_section
-                0x000000000000024c        0xc src/main.c.8.o
 
-.igot.plt       0x0000000000000258        0x0
+.igot.plt       0x0000000000000280        0x0
  .igot.plt      0x0000000000000000        0x0 /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
 
-.bss            0x0000000000000258       0x18
+.bss            0x0000000000000280       0x34
  *(.bss)
  *(.bss.*)
- .bss.s_main_menu_layer
-                0x0000000000000258        0x4 src/main.c.8.o
- .bss.s_main_window
-                0x000000000000025c        0x4 src/main.c.8.o
- .bss.s_main_menu_items
-                0x0000000000000260       0x10 src/main.c.8.o
+ .bss.S         0x0000000000000280       0x34 src/main.c.8.o
 
 DISCARD
  libc.a(*)
@@ -842,16 +835,16 @@ OUTPUT(/Users/mitch/Dev/pebble/PebbleGRT/build/pebble-app.elf elf32-littlearm)
  .comment       0x0000000000000000       0x4f appinfo.auto.c.8.o
  .comment       0x0000000000000000       0x4f /Users/mitch/pebble-dev/PebbleSDK-2.7/arm-cs-tools/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtend.o
 
-.debug_info     0x0000000000000000      0xaec
- .debug_info    0x0000000000000000      0x7ea src/main.c.8.o
- .debug_info    0x00000000000007ea      0x302 appinfo.auto.c.8.o
+.debug_info     0x0000000000000000      0xb08
+ .debug_info    0x0000000000000000      0x806 src/main.c.8.o
+ .debug_info    0x0000000000000806      0x302 appinfo.auto.c.8.o
 
-.debug_abbrev   0x0000000000000000      0x307
- .debug_abbrev  0x0000000000000000      0x269 src/main.c.8.o
- .debug_abbrev  0x0000000000000269       0x9e appinfo.auto.c.8.o
+.debug_abbrev   0x0000000000000000      0x321
+ .debug_abbrev  0x0000000000000000      0x283 src/main.c.8.o
+ .debug_abbrev  0x0000000000000283       0x9e appinfo.auto.c.8.o
 
-.debug_loc      0x0000000000000000       0xb4
- .debug_loc     0x0000000000000000       0xb4 src/main.c.8.o
+.debug_loc      0x0000000000000000       0xc0
+ .debug_loc     0x0000000000000000       0xc0 src/main.c.8.o
 
 .debug_aranges  0x0000000000000000       0x48
  .debug_aranges
@@ -859,18 +852,18 @@ OUTPUT(/Users/mitch/Dev/pebble/PebbleGRT/build/pebble-app.elf elf32-littlearm)
  .debug_aranges
                 0x0000000000000030       0x18 appinfo.auto.c.8.o
 
-.debug_ranges   0x0000000000000000       0x40
- .debug_ranges  0x0000000000000000       0x40 src/main.c.8.o
+.debug_ranges   0x0000000000000000       0x20
+ .debug_ranges  0x0000000000000000       0x20 src/main.c.8.o
 
-.debug_line     0x0000000000000000      0x269
- .debug_line    0x0000000000000000      0x14d src/main.c.8.o
- .debug_line    0x000000000000014d      0x11c appinfo.auto.c.8.o
+.debug_line     0x0000000000000000      0x25f
+ .debug_line    0x0000000000000000      0x143 src/main.c.8.o
+ .debug_line    0x0000000000000143      0x11c appinfo.auto.c.8.o
 
-.debug_str      0x0000000000000000      0x656
- .debug_str     0x0000000000000000      0x4d5 src/main.c.8.o
-                                        0x568 (size before relaxing)
- .debug_str     0x00000000000004d5      0x181 appinfo.auto.c.8.o
+.debug_str      0x0000000000000000      0x634
+ .debug_str     0x0000000000000000      0x4b3 src/main.c.8.o
+                                        0x53f (size before relaxing)
+ .debug_str     0x00000000000004b3      0x181 appinfo.auto.c.8.o
                                         0x26d (size before relaxing)
 
-.debug_frame    0x0000000000000000       0x64
- .debug_frame   0x0000000000000000       0x64 src/main.c.8.o
+.debug_frame    0x0000000000000000       0x60
+ .debug_frame   0x0000000000000000       0x60 src/main.c.8.o
