@@ -195,9 +195,11 @@ function makeDelayString(delayTotalSeconds) {
 
 GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
     var request = new XMLHttpRequest();
-    request.open("GET", "http://realtimemap.grt.ca/Stop/GetBusInfo?" +
+    var url = "http://realtimemap.grt.ca/Stop/GetBusInfo?" +
         "VehicleId=" + encodeURIComponent(vehicleId) +
-        "&TripId=" + encodeURIComponent(tripId));
+        "&TripId=" + encodeURIComponent(tripId);
+    console.log("--> "+url);
+    request.open("GET", url);
     request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
     request.onload = function () {
         if (request.status == 200) {
@@ -209,7 +211,7 @@ GRT.getBusInfo = function (myLoc, vehicleId, tripId, callback) {
                 var minutes = stop["Minutes"] + Math.floor(delayTotalSeconds / 60);
                 var minString = "N/A";
                 if (minutes == 0) {
-                    minString = "Less than a minute"
+                    minString = "< 1 minute"
                 } else if (minutes == 1) {
                     minString = "1 minute"
                 } else {
