@@ -8,7 +8,7 @@ static struct {
    Window *window;
 } S;
 
-static void main_window_load(Window *window) {
+static void window_load(Window *window) {
    Layer *window_layer = window_get_root_layer(window);
    GRect window_bounds = layer_get_bounds(window_layer);
    S.menu_layer = simple_menu_layer_create(window_bounds,
@@ -20,7 +20,7 @@ static void main_window_load(Window *window) {
    layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
 }
 
-static void main_window_unload(Window *window) {
+static void window_unload(Window *window) {
    simple_menu_layer_destroy(S.menu_layer);
 }
 
@@ -43,8 +43,8 @@ static void init() {
    S.window = window_create();
 
    window_set_window_handlers(S.window, (WindowHandlers) {
-      .load = main_window_load,
-      .unload = main_window_unload
+      .load = window_load,
+      .unload = window_unload
    });
 
    window_stack_push(S.window, true);
