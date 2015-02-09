@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include "nearby_buses.h"
+#include "nearby_stops.h"
 
 static struct {
     SimpleMenuLayer *menu_layer;
@@ -32,7 +33,8 @@ static void init() {
         .callback = push_nearby_buses_window
     };
     S.actions_menu_items[1] = (SimpleMenuItem) {
-        .title = "Nearby Stops"
+        .title = "Nearby Stops",
+        .callback = push_nearby_stops_window
     };
     S.actions_menu_section = (SimpleMenuSection) {
         .num_items = 2,

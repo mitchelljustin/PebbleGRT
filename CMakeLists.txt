@@ -10,6 +10,7 @@ set(SOURCE_FILES
     src/js/main.js
     src/main.c
     src/nearby_buses.c
+    src/nearby_stops.c
     )
 
 add_executable(PebbleGRT ${SOURCE_FILES})
