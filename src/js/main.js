@@ -2,9 +2,9 @@
  * Created by mitch on 15-02-07.
  */
 
-var PGTypeReportCloseBuses = 0;
+var PGTypeNearbyBuses = 0;
 var PGTypeBusDetail = 1;
-var PGTypeReportCloseStops = 2;
+var PGTypeNearbyStops = 2;
 
 function getGeoLocation(onSuccess) {
     var locationOptions = {
@@ -54,6 +54,7 @@ function nearbyBuses() {
             var name = bus.description;
             var distance = bus.distance + "km";
             var msg = {
+                "PGKeyMessageType": PGTypeNearbyBuses,
                 "PGKeyBusName": name,
                 "PGKeyBusDistance": distance,
                 "PGKeyBusIndex": index
@@ -72,7 +73,7 @@ function busDetail(vehicleId, tripId) {
 
     function busInfoCallback(info) {
         var msg = {
-            "PGKeyMessageType": 1,
+            "PGKeyMessageType": PGTypeBusDetail,
             "PGKeyBusDetailDelay": info.delay
         };
         extendWithArray(msg, info.stops, 2);
@@ -93,6 +94,7 @@ function nearbyStops() {
             var name = stop.name;
             var distance = stop.distance + "km";
             var msg = {
+                "PGKeyMessageType": PGTypeNearbyStops,
                 "PGKeyStopName": name,
                 "PGKeyStopDistance": distance,
                 "PGKeyStopIndex": index
@@ -108,7 +110,7 @@ Pebble.addEventListener('appmessage',
         console.log("Received message from Pebble: " + JSON.stringify(data));
         var messageType = data["PGKeyMessageType"];
         switch (messageType) {
-            case PGTypeReportCloseBuses:
+            case PGTypeNearbyBuses:
                 nearbyBuses();
                 break;
             case PGTypeBusDetail:
@@ -116,7 +118,7 @@ Pebble.addEventListener('appmessage',
                 var tripId = data["PGKeyTripId"];
                 busDetail(vehicleId, tripId);
                 break;
-            case PGTypeReportCloseStops:
+            case PGTypeNearbyStops:
                 nearbyStops();
                 break;
         }

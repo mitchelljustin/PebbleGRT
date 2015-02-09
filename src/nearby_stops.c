@@ -72,7 +72,7 @@ void nearby_stops_app_message_received(DictionaryIterator *iterator, void *conte
     APP_LOG(APP_LOG_LEVEL_INFO, "stop received");
 
     while (t != NULL) {
-        APP_LOG(APP_LOG_LEVEL_INFO, "t->key = %li", t->key);
+        APP_LOG(APP_LOG_LEVEL_INFO, "t->key = %li\nt->value = %p", t->key, (void *)t->value);
         switch (t->key) {
             case PGKeyMessageType:
                 break;
