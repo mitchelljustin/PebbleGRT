@@ -3,7 +3,10 @@
     "PGKeyMessageType": 0,
     "PGKeyBusDetailDelay": 1,
     "PGKeyVehicleId": 1,
-    "PGKeyTripId": 2
+    "PGKeyTripId": 2,
+    "PGKeyBusName": 1,
+    "PGKeyBusDistance": 2,
+    "PGKeyBusIndex": 3
   },
   "capabilities": [
     "location"
