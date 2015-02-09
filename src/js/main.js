@@ -38,7 +38,7 @@ function sendJsonToPebble(json) {
     var string = JSON.stringify(json);
     console.log("Sending message to Pebble: " + string);
 
-    Pebble.sendAppMessage(msg,
+    Pebble.sendAppMessage(json,
         function () {
             console.log("Message sent.");
         },
