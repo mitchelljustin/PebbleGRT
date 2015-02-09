@@ -6,7 +6,7 @@
 var stopsMaxDistance = 20; // Km
 var busesMaxDistance = 20; // Km
 
-var resultsCountLimit = 6;
+var resultsCountLimit = 10;
 
 var GRT = {};
 
@@ -14,6 +14,7 @@ GRT.Bus = function (info) {
     this.description = info["Trip"]["Headsign"];
     this.tripId = info["TripId"];
     this.vehicleId = info["VehicleId"];
+    this.distance = -1;
 };
 
 GRT.findNearbyStops = function (loc) {

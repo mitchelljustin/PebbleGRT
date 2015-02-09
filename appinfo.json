@@ -6,7 +6,10 @@
     "PGKeyTripId": 2,
     "PGKeyBusName": 1,
     "PGKeyBusDistance": 2,
-    "PGKeyBusIndex": 3
+    "PGKeyBusIndex": 3,
+    "PGKeyStopName": 1,
+    "PGKeyStopDistance": 2,
+    "PGKeyStopIndex": 3
   },
   "capabilities": [
     "location"

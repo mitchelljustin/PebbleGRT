@@ -47,9 +47,19 @@ function sendJsonToPebble(json) {
         });
 }
 
-function reportClosestBuses() {
+function nearbyBuses() {
     function closeBusesCallback(buses) {
-
+        for (var index in buses) {
+            var bus = buses[index];
+            var name = bus.description;
+            var distance = bus.distance + "km";
+            var msg = {
+                "PGKeyBusName": name,
+                "PGKeyBusDistance": distance,
+                "PGKeyBusIndex": index
+            };
+            sendJsonToPebble(msg);
+        }
     }
 
     getGeoLocation(function (loc) {
@@ -75,6 +85,23 @@ function busDetail(vehicleId, tripId) {
     });
 }
 
+function nearbyStops() {
+    getGeoLocation(function (loc) {
+        var stops = GRT.findNearbyStops(loc);
+        for (var index in stops) {
+            var stop = stops[index];
+            var name = stop.description;
+            var distance = stop.distance + "km";
+            var msg = {
+                "PGKeyStopName": name,
+                "PGKeyStopDistance": distance,
+                "PGKeyStopIndex": index
+            };
+            sendJsonToPebble(msg);
+        }
+    })
+}
+
 Pebble.addEventListener('appmessage',
     function (e) {
         var data = e.payload;
@@ -82,7 +109,7 @@ Pebble.addEventListener('appmessage',
         var messageType = data["PGKeyMessageType"];
         switch (messageType) {
             case PGTypeReportCloseBuses:
-                reportClosestBuses();
+                nearbyBuses();
                 break;
             case PGTypeBusDetail:
                 var vehicleId = data["PGKeyVehicleId"];
@@ -90,7 +117,7 @@ Pebble.addEventListener('appmessage',
                 busDetail(vehicleId, tripId);
                 break;
             case PGTypeReportCloseStops:
-
+                nearbyStops();
                 break;
         }
     }
