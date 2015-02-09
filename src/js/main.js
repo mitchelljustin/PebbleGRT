@@ -90,7 +90,7 @@ function nearbyStops() {
         var stops = GRT.findNearbyStops(loc);
         for (var index in stops) {
             var stop = stops[index];
-            var name = stop.description;
+            var name = stop.name;
             var distance = stop.distance + "km";
             var msg = {
                 "PGKeyStopName": name,
