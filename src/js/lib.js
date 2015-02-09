@@ -14,6 +14,7 @@ function geoDistance(lat1, lon1, lat2, lon2) {
     function degToRad(deg) {
         return deg * 0.0174532925;
     }
+
     // returns the distance in km between the pair of latitude and longitudes provided in decimal degrees
     var R = 6371; // km
     var dLat = degToRad(lat2 - lat1);

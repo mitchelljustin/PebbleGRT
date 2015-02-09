@@ -10,7 +10,7 @@ var resultsCountLimit = 6;
 
 var GRT = {};
 
-GRT.Bus = function(info) {
+GRT.Bus = function (info) {
     this.description = info["Trip"]["Headsign"];
     this.tripId = info["TripId"];
     this.vehicleId = info["VehicleId"];
@@ -48,7 +48,7 @@ GRT.findNearbyBuses = function (loc, callback) {
 
     var request = new XMLHttpRequest();
     var url = "http://realtimemap.grt.ca/Map/GetVehicles";
-    console.log("GET "+url);
+    console.log("GET " + url);
     request.open("GET", url);
     request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
     request.onload = function () {
@@ -92,7 +92,7 @@ GRT.getBusInfo = function (loc, vehicleId, tripId, callback) {
     var url = "http://realtimemap.grt.ca/Stop/GetBusInfo?" +
         "VehicleId=" + encodeURIComponent(vehicleId) +
         "&TripId=" + encodeURIComponent(tripId);
-    console.log("GET "+url);
+    console.log("GET " + url);
     request.open("GET", url);
     request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
     request.onload = function () {
