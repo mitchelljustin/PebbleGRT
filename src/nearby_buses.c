@@ -19,7 +19,7 @@ static struct {
 
 static void send_phone_message_nearby_buses();
 
-static void window_load(Window *window) {
+static void nearby_buses_window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     GRect window_bounds = layer_get_bounds(window_layer);
 
@@ -60,11 +60,11 @@ static void send_phone_message_nearby_buses() {
     app_message_outbox_send();
 }
 
-static void window_unload(Window *window) {
+static void nearby_buses_window_unload(Window *window) {
     simple_menu_layer_destroy(S.menu_layer);
 }
 
-void app_message_received(DictionaryIterator *iterator, void *context) {
+void nearby_buses_app_message_received(DictionaryIterator *iterator, void *context) {
     int32_t index = 0;
     char *name = NULL;
     char *distance = NULL;
@@ -101,12 +101,12 @@ void push_nearby_buses_window(int index, void *context) {
     S.window = window_create();
 
     window_set_window_handlers(S.window, (WindowHandlers) {
-        .load = window_load,
-        .unload = window_unload
+        .load = nearby_buses_window_load,
+        .unload = nearby_buses_window_unload
     });
 
     app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
-    app_message_register_inbox_received(app_message_received);
+    app_message_register_inbox_received(nearby_buses_app_message_received);
 
     window_stack_push(S.window, true);
 }
