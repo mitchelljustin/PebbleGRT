@@ -22,7 +22,7 @@ static void send_phone_message_nearby_stops() {
     DictionaryIterator *iter;
     app_message_outbox_begin(&iter);
 
-    dict_write_uint8(iter, PGKeyMessageType, (uint8_t) MessageTypeNearbyStopes);
+    dict_write_uint8(iter, PGKeyMessageType, (uint8_t) MessageTypeNearbyStops);
 
     app_message_outbox_send();
 }
