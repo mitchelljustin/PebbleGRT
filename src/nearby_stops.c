@@ -88,6 +88,7 @@ void nearby_stops_app_message_received(DictionaryIterator *iterator, void *conte
         }
         t = dict_read_next(iterator);
     }
+    app_log(APP_LOG_LEVEL_DEBUG, "i: %d, name: %s, distance: %s", index, name, distance);
 
     strncpy(S.nearby_stops_items_titles[index], distance, NEARBY_STOP_TITLE_MAX_LEN);
     strncpy(S.nearby_stops_items_subtitles[index], name, NEARBY_STOP_TITLE_MAX_LEN);
