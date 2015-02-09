@@ -1,24 +1,24 @@
 {
-    "appKeys": {
-        "PGKeyMessageType": 0,
-        "PGKeyBusDetailDelay": 1,
-        "PGKeyVehicleId": 1,
-        "PGKeyTripId": 2
-    },
-    "capabilities": [
-        "location"
-    ],
-    "companyName": "Mizzl",
-    "longName": "PebbleGRT",
-    "projectType": "native",
-    "resources": {
-        "media": []
-    },
-    "shortName": "PebbleGRT",
-    "uuid": "365d1636-8e8b-47c5-991c-0fc2d759d219",
-    "versionCode": 1,
-    "versionLabel": "0.2",
-    "watchapp": {
-        "watchface": false
-    }
+  "appKeys": {
+    "PGKeyMessageType": 0,
+    "PGKeyBusDetailDelay": 1,
+    "PGKeyVehicleId": 1,
+    "PGKeyTripId": 2
+  },
+  "capabilities": [
+    "location"
+  ],
+  "companyName": "Mizzl",
+  "longName": "PebbleGRT",
+  "projectType": "native",
+  "resources": {
+    "media": []
+  },
+  "shortName": "PebbleGRT",
+  "uuid": "365d1636-8e8b-47c5-991c-0fc2d759d219",
+  "versionCode": 1,
+  "versionLabel": "0.2",
+  "watchapp": {
+    "watchface": false
+  }
 }
