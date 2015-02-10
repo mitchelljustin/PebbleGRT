@@ -77,7 +77,7 @@ void nearby_stops_app_message_received(DictionaryIterator *iterator, void *conte
             case PGKeyMessageType:
                 break;
             case PGKeyStopIndex:
-                index = t->value->int32;
+                index = t->value->uint32;
                 break;
             case PGKeyStopName:
                 name = t->value->cstring;

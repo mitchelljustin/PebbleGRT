@@ -78,7 +78,7 @@ void nearby_buses_app_message_received(DictionaryIterator *iterator, void *conte
             case PGKeyMessageType:
                 break;
             case PGKeyBusIndex:
-                index = t->value->int32;
+                index = t->value->uint32;
                 break;
             case PGKeyBusName:
                 name = t->value->cstring;
