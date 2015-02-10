@@ -89,7 +89,8 @@ function busDetail(vehicleId, tripId) {
 function nearbyStops() {
     getGeoLocation(function (loc) {
         var stops = GRT.findNearbyStops(loc);
-        for (var index in stops) {
+        var index = 0;
+        //for (var index in stops) {
             var stop = stops[index];
             var name = stop.name;
             var distance = stop.distance + "km";
@@ -100,7 +101,7 @@ function nearbyStops() {
                 "PGKeyStopIndex": index
             };
             sendJsonToPebble(msg);
-        }
+        //}
     })
 }
 
