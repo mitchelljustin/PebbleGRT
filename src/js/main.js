@@ -51,6 +51,7 @@ function nearbyBuses() {
                 "PGKeyBusIndex": index
             };
             sendJsonToPebble(msg);
+            for (var i = 0; i < 10000; i++) {}
         }
     }
 
