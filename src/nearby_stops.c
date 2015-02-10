@@ -70,10 +70,7 @@ void nearby_stops_app_message_received(DictionaryIterator *iterator, void *conte
 
     Tuple *t = dict_read_first(iterator);
 
-    APP_LOG(APP_LOG_LEVEL_INFO, "stop received");
-
     while (t != NULL) {
-        APP_LOG(APP_LOG_LEVEL_INFO, "t->key = %li\nt->value = %s", t->key, t->value->cstring);
         switch (t->key) {
             case PGKeyMessageType:
                 break;
@@ -92,13 +89,26 @@ void nearby_stops_app_message_received(DictionaryIterator *iterator, void *conte
         }
         t = dict_read_next(iterator);
     }
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "i: %li, name: %s, distance: %s", index, name, distance);
 
     strncpy(S.nearby_stops_items_titles[index], distance, NEARBY_STOP_TITLE_MAX_LEN);
     strncpy(S.nearby_stops_items_subtitles[index], name, NEARBY_STOP_TITLE_MAX_LEN);
 
     layer_mark_dirty(simple_menu_layer_get_layer(S.menu_layer));
 }
+
+
+static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+    APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+}
+
+static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+    APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+}
+
+static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+    APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+}
+
 
 void push_nearby_stops_window(int index, void *context) {
     S.window = window_create();
@@ -109,6 +119,9 @@ void push_nearby_stops_window(int index, void *context) {
     });
 
     app_message_register_inbox_received(nearby_stops_app_message_received);
+    app_message_register_inbox_dropped(inbox_dropped_callback);
+    app_message_register_outbox_failed(outbox_failed_callback);
+    app_message_register_outbox_sent(outbox_sent_callback);
 
     window_stack_push(S.window, true);
 }
