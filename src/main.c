@@ -26,8 +26,6 @@ static void window_unload(Window *window) {
 }
 
 static void init() {
-    app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
-
     S.actions_menu_items[0] = (SimpleMenuItem) {
         .title = "Nearby Buses",
         .callback = push_nearby_buses_window
