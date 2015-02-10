@@ -49,7 +49,7 @@ function sendJsonToPebble(json) {
 
 function nearbyBuses() {
     function closeBusesCallback(buses) {
-        for (var index in buses) {
+        for (var index = 0; index < buses.length; index++) {
             var bus = buses[index];
             var name = bus.description;
             var distance = bus.distance + "km";
@@ -89,7 +89,7 @@ function busDetail(vehicleId, tripId) {
 function nearbyStops() {
     getGeoLocation(function (loc) {
         var stops = GRT.findNearbyStops(loc);
-        for (var index in stops) {
+        for (var index = 0; index < buses.length; index++) {
             var stop = stops[index];
             var name = stop.name;
             var distance = stop.distance + "km";
