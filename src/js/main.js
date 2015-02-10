@@ -98,7 +98,7 @@ function nearbyStops() {
                 "PGKeyStopDistance": distance,
                 "PGKeyStopIndex": index
             };
-            saved_stops.push(stop);
+            saved_stops.push(msg);
         }
         sendStopAtIndexToPebble(0);
     })
