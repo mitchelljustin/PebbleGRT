@@ -25,15 +25,6 @@ function locationError(err) {
     console.log('location error (' + err.code + '): ' + err.message);
 }
 
-function encodeBus(bus) {
-    return [
-        bus.distance + "km",
-        bus.description,
-        bus.tripId,
-        bus.vehicleId
-    ].join(";");
-}
-
 function sendJsonToPebble(json) {
     var string = JSON.stringify(json);
     console.log("Sending message to Pebble: " + string);

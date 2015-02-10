@@ -61,6 +61,7 @@ static void send_phone_message_nearby_buses() {
 }
 
 static void nearby_buses_window_unload(Window *window) {
+    app_message_deregister_callbacks();
     simple_menu_layer_destroy(S.menu_layer);
 }
 
@@ -109,7 +110,6 @@ void push_nearby_buses_window(int index, void *context) {
         .unload = nearby_buses_window_unload
     });
 
-    app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
     app_message_register_inbox_received(nearby_buses_app_message_received);
 
     window_stack_push(S.window, true);
