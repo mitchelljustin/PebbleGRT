@@ -89,7 +89,7 @@ function busDetail(vehicleId, tripId) {
 function nearbyStops() {
     getGeoLocation(function (loc) {
         var stops = GRT.findNearbyStops(loc);
-        for (var index = 0; index < buses.length; index++) {
+        for (var index = 0; index < stops.length; index++) {
             var stop = stops[index];
             var name = stop.name;
             var distance = stop.distance + "km";
