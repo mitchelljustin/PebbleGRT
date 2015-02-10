@@ -6,6 +6,8 @@ var PGTypeNearbyBuses = 0;
 var PGTypeBusDetail = 1;
 var PGTypeNearbyStops = 2;
 
+var saved_stops = null;
+
 function getGeoLocation(onSuccess) {
     var locationOptions = {
         enableHighAccuracy: true,
@@ -51,7 +53,6 @@ function nearbyBuses() {
                 "PGKeyBusIndex": index
             };
             sendJsonToPebble(msg);
-            for (var i = 0; i < 10000; i++) {}
         }
     }
 
@@ -78,8 +79,14 @@ function busDetail(vehicleId, tripId) {
     });
 }
 
+function sendStopAtIndexToPebble(index) {
+    var stop = saved_stops[index];
+    sendJsonToPebble(stop);
+}
+
 function nearbyStops() {
     getGeoLocation(function (loc) {
+        saved_stops = [];
         var stops = GRT.findNearbyStops(loc);
         for (var index = 0; index < stops.length; index++) {
             var stop = stops[index];
@@ -91,8 +98,9 @@ function nearbyStops() {
                 "PGKeyStopDistance": distance,
                 "PGKeyStopIndex": index
             };
-            sendJsonToPebble(msg);
+            saved_stops.push(stop);
         }
+        sendStopAtIndexToPebble(0);
     })
 }
 
@@ -111,7 +119,14 @@ Pebble.addEventListener('appmessage',
                 busDetail(vehicleId, tripId);
                 break;
             case PGTypeNearbyStops:
-                nearbyStops();
+                var index = data["PGKeyStopIndex"];
+                if (saved_stops == null) {
+                    nearbyStops();
+                } else if (index < saved_stops.length - 1) {
+                    sendStopAtIndexToPebble(index + 1);
+                } else {
+                    saved_stops = null;
+                }
                 break;
         }
     }

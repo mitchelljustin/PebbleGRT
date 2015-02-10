@@ -17,11 +17,12 @@ static struct {
     SimpleMenuItem nearby_stops_items[NUM_STOPS];
 } S;
 
-static void send_phone_message_nearby_stops() {
+static void send_phone_message_nearby_stops(int32_t prev_index) {
     DictionaryIterator *iter;
     app_message_outbox_begin(&iter);
 
     dict_write_uint8(iter, PGKeyMessageType, (uint8_t) MessageTypeNearbyStops);
+    dict_write_int32(iter, PGKeyBusIndex, (int32_t) prev_index );
 
     app_message_outbox_send();
 }
@@ -55,7 +56,7 @@ static void nearby_stops_window_load(Window *window) {
 
     layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
 
-    send_phone_message_nearby_stops();
+    send_phone_message_nearby_stops(-1);
 }
 
 static void nearby_stops_window_unload(Window *window) {
@@ -94,6 +95,8 @@ void nearby_stops_app_message_received(DictionaryIterator *iterator, void *conte
     strncpy(S.nearby_stops_items_subtitles[index], name, NEARBY_STOP_TITLE_MAX_LEN);
 
     layer_mark_dirty(simple_menu_layer_get_layer(S.menu_layer));
+
+    send_phone_message_nearby_stops(index);
 }
 
 
