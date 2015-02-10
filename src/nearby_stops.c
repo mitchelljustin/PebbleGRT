@@ -98,7 +98,7 @@ void nearby_stops_app_message_received(DictionaryIterator *iterator, void *conte
 
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
-    APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+    APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped! %x", reason);
 }
 
 static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
