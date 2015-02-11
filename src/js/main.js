@@ -27,13 +27,16 @@ function locationError(err) {
     console.log('location error (' + err.code + '): ' + err.message);
 }
 
-function sendJsonToPebble(json) {
+function sendJsonToPebble(json, callback) {
     var string = JSON.stringify(json);
     console.log("Sending message to Pebble: " + string);
 
     Pebble.sendAppMessage(json,
         function () {
             console.log("Message sent.");
+            if (callback) {
+                callback();
+            }
         },
         function () {
             console.log("ERROR: could not send message: \n" + string);
@@ -86,7 +89,7 @@ function sendStopAtIndexToPebble(index) {
 
 function nearbyStops() {
     getGeoLocation(function (loc) {
-        saved_stops = [];
+        var messages = [];
         var stops = GRT.findNearbyStops(loc);
         for (var index = 0; index < stops.length; index++) {
             var stop = stops[index];
@@ -98,10 +101,19 @@ function nearbyStops() {
                 "PGKeyStopDistance": distance,
                 "PGKeyStopIndex": index
             };
-            saved_stops.push(msg);
+            messages.push(msg);
         }
-        sendStopAtIndexToPebble(0);
-    })
+        index = 0;
+        var json = null;
+        function pebbleAckCallback() {
+            index += 1;
+            if (index == messages.length) {
+                return;
+            }
+            json = messages[index];
+            sendJsonToPebble(json, pebbleAckCallback);
+        }
+    });
 }
 
 Pebble.addEventListener('appmessage',
@@ -119,16 +131,7 @@ Pebble.addEventListener('appmessage',
                 busDetail(vehicleId, tripId);
                 break;
             case PGTypeNearbyStops:
-                var index = data["PGKeyStopIndex"];
-                console.log("Got request for stop at index " + index);
-                console.log("saved_stops.length = " + (saved_stops == null ? -1 : saved_stops.length));
-                if (saved_stops == null) {
-                    nearbyStops();
-                } else if (index < saved_stops.length - 1) {
-                    sendStopAtIndexToPebble(index + 1);
-                } else {
-                    saved_stops = null;
-                }
+                nearbyStops();
                 break;
         }
     }
