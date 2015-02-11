@@ -45,6 +45,7 @@ function sendJsonToPebble(json, callback) {
 
 function nearbyBuses() {
     function closeBusesCallback(buses) {
+        console.log("Nearby buses: \n"+ buses);
         var messages = [];
         for (var index = 0; index < buses.length; index++) {
             var bus = buses[index];
