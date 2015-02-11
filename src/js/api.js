@@ -11,7 +11,7 @@ var resultsCountLimit = 10;
 var GRT = {};
 
 GRT.Bus = function (info) {
-    this.description = info["Trip"]["Headsign"];
+    this.description = info["Trip"]["Headsign"] || "No description";
     this.tripId = info["TripId"];
     this.vehicleId = info["VehicleId"];
     this.distance = -1;
