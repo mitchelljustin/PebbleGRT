@@ -24,6 +24,8 @@ static void send_phone_message_nearby_stops(int32_t prev_index) {
     dict_write_uint8(iter, PGKeyMessageType, (uint8_t) MessageTypeNearbyStops);
     dict_write_int32(iter, PGKeyBusIndex, (int32_t) prev_index );
 
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "Requesting stop, prev_index=%li", prev_index);
+
     app_message_outbox_send();
 }
 
