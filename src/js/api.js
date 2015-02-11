@@ -78,7 +78,7 @@ GRT.getBusInfo = function (loc, vehicleId, tripId, callback) {
     }
 
     function makeMinutesString(minutes) {
-        var minString = "N/A";
+        var minString;
         if (minutes == 0) {
             minString = "< 1 minute"
         } else if (minutes == 1) {
@@ -108,7 +108,7 @@ GRT.getBusInfo = function (loc, vehicleId, tripId, callback) {
                 var stopName = stop["Name"];
                 return {
                     "PGKeyBusDetailStopName": stopName,
-                    "PGKeyBusDetailStopTime": minutes
+                    "PGKeyBusDetailStopTime": makeMinutesString(minutes)
                 };
             });
             callback({
