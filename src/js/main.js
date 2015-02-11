@@ -100,7 +100,7 @@ function nearbyStops() {
             };
             saved_stops.push(msg);
         }
-        sendJsonToPebble(msg);
+        sendStopAtIndexToPebble(0);
     })
 }
 
