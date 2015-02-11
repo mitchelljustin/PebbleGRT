@@ -1,15 +1,20 @@
 {
   "appKeys": {
     "PGKeyMessageType": 0,
-    "PGKeyBusDetailDelay": 1,
-    "PGKeyVehicleId": 1,
-    "PGKeyTripId": 2,
+
     "PGKeyBusName": 1,
     "PGKeyBusDistance": 2,
     "PGKeyBusIndex": 3,
+
     "PGKeyStopName": 1,
     "PGKeyStopDistance": 2,
-    "PGKeyStopIndex": 3
+    "PGKeyStopIndex": 3,
+
+    "PGKeyBusDetailVehicleId": 1,
+    "PGKeyBusDetailTripId": 2,
+    "PGKeyBusDetailDelay": 1,
+    "PGKeyBusDetailStopName": 1,
+    "PGKeyBusDetailStopTime": 2
   },
   "capabilities": [
     "location"

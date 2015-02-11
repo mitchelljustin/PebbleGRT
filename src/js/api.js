@@ -106,7 +106,10 @@ GRT.getBusInfo = function (loc, vehicleId, tripId, callback) {
             var stopsForPebble = stops.map(function (stop) {
                 var minutes = stop["Minutes"] + Math.floor(delayTotalSeconds / 60);
                 var stopName = stop["Name"];
-                return makeMinutesString(minutes) + ";" + stopName;
+                return {
+                    "PGKeyBusDetailStopName": stopName,
+                    "PGKeyBusDetailStopTime": minutes
+                };
             });
             callback({
                 delay: delayString,

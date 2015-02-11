@@ -36,8 +36,6 @@ static void bus_detail_window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     GRect window_bounds = layer_get_bounds(window_layer);
     
-    
-
     layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
 
     send_phone_message_bus_detail();
@@ -48,8 +46,8 @@ static void send_phone_message_bus_detail() {
     app_message_outbox_begin(&iter);
 
     dict_write_uint8(iter, PGKeyMessageType, (uint8_t) MessageTypeBusDetail);
-    dict_write_cstring(iter, PGKeyTripId, S.trip_id);
-    dict_write_cstring(iter, PGKeyVehicleId, S.vehicle_id);
+    dict_write_cstring(iter, PGKeyBusDetailTripId, S.trip_id);
+    dict_write_cstring(iter, PGKeyBusDetailVehicleId, S.vehicle_id);
 
     app_message_outbox_send();
 }
@@ -69,7 +67,6 @@ void bus_detail_app_message_received(DictionaryIterator *iterator, void *context
         switch (t->key) {
             default:
                 break;
-                
         }
         t = dict_read_next(iterator);
     }
@@ -88,7 +85,7 @@ void push_bus_detail_window(char *trip_id, char *vehicle_id) {
     strncpy(S.trip_id, trip_id, 40); 
     strncpy(S.vehicle_id, vehicle_id, 40);
 
-    strcpy(S.delay_subtitle_buf, LOADING_STRING);
+    strncpy(S.delay_subtitle_buf, LOADING_STRING, BUFFER_MAX_LEN);
 
     for (int i = 0; i < NUM_STOP_MENU_ITEMS; ++i) {
         (&S.stop_menu_items[i])->title = LOADING_STRING;
@@ -114,8 +111,8 @@ void push_bus_detail_window(char *trip_id, char *vehicle_id) {
         S.menu_sections,
         NUM_SECTIONS,
         NULL);
-    layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
 
+    layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
 
     app_message_register_inbox_received(bus_detail_app_message_received);
 

@@ -5,8 +5,8 @@
 var PGTypeNearbyBuses = 0;
 var PGTypeBusDetail = 1;
 var PGTypeNearbyStops = 2;
-
-var saved_stops = null;
+var PGTypeBusDetailDelay = 3;
+var PGTypeBusDetailStop = 4;
 
 function getGeoLocation(onSuccess) {
     var locationOptions = {
@@ -25,6 +25,21 @@ function getGeoLocation(onSuccess) {
 
 function locationError(err) {
     console.log('location error (' + err.code + '): ' + err.message);
+}
+
+function sendPiecewiseMessages(messages) {
+    console.log("Sending "+ messages.length + " messages to Pebble");
+    var index = 0;
+    var json = null;
+    function pebbleAckCallback() {
+        if (index == messages.length) {
+            return;
+        }
+        json = messages[index];
+        index += 1;
+        sendJsonToPebble(json, pebbleAckCallback);
+    }
+    pebbleAckCallback();
 }
 
 function sendJsonToPebble(json, callback) {
@@ -71,32 +86,22 @@ function busDetail(vehicleId, tripId) {
     console.log("Getting bus detail for vehicleId=" + vehicleId + " tripId=" + tripId);
 
     function busInfoCallback(info) {
-        var msg = {
-            "PGKeyMessageType": PGTypeBusDetail,
+        var messages = [
+        {
+            "PGKeyMessageType": PGTypeBusDetailDelay,
             "PGKeyBusDetailDelay": info.delay
-        };
-        extendWithArray(msg, info.stops, 2);
+        }];
+        Array.prototype.push.apply(messages, info.stops.map(function (stop) {
+            stop["PGKeyMessageType"] = PGTypeBusDetailStop;
+            return stop;
+        }));
 
-        sendJsonToPebble(msg);
+        sendPiecewiseMessages(messages);
     }
 
     getGeoLocation(function (loc) {
         GRT.getBusInfo(loc, vehicleId, tripId, busInfoCallback);
     });
-}
-
-function sendPiecewiseMessages(messages) {
-    var index = 0;
-    var json = null;
-    function pebbleAckCallback() {
-        if (index == messages.length) {
-            return;
-        }
-        json = messages[index];
-        index += 1;
-        sendJsonToPebble(json, pebbleAckCallback);
-    }
-    pebbleAckCallback();
 }
 
 function nearbyStops() {
@@ -129,8 +134,8 @@ Pebble.addEventListener('appmessage',
                 nearbyBuses();
                 break;
             case PGTypeBusDetail:
-                var vehicleId = data["PGKeyVehicleId"];
-                var tripId = data["PGKeyTripId"];
+                var vehicleId = data["PGKeyBusDetailVehicleId"];
+                var tripId = data["PGKeyBusDetailTripId"];
                 busDetail(vehicleId, tripId);
                 break;
             case PGTypeNearbyStops:
