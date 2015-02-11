@@ -4,7 +4,7 @@
 
 #define NUM_BUSES 10
 
-#define NEARBY_BUS_TITLE_MAX_LEN 128
+#define BUFFER_MAX_LEN 128
 
 #define LOADING_STRING "Loading.."
 
@@ -12,8 +12,8 @@ static struct {
     Window *window;
     SimpleMenuLayer *menu_layer;
     SimpleMenuSection nearby_buses_menu_section;
-    char nearby_buses_items_titles[NUM_BUSES][NEARBY_BUS_TITLE_MAX_LEN];
-    char nearby_buses_items_subtitles[NUM_BUSES][NEARBY_BUS_TITLE_MAX_LEN];
+    char nearby_buses_items_titles[NUM_BUSES][BUFFER_MAX_LEN];
+    char nearby_buses_items_subtitles[NUM_BUSES][BUFFER_MAX_LEN];
     SimpleMenuItem nearby_buses_items[NUM_BUSES];
 } S;
 
@@ -94,10 +94,10 @@ void nearby_buses_app_message_received(DictionaryIterator *iterator, void *conte
         t = dict_read_next(iterator);
     }
 
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "i: %li, name: %s, distance: %s", index, name, distance);
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "Nearby bus: { i: %li, name: %s, distance: %s }", index, name, distance);
 
-    strncpy(S.nearby_buses_items_titles[index], distance, NEARBY_BUS_TITLE_MAX_LEN);
-    strncpy(S.nearby_buses_items_subtitles[index], name, NEARBY_BUS_TITLE_MAX_LEN);
+    strncpy(S.nearby_buses_items_titles[index], distance, BUFFER_MAX_LEN);
+    strncpy(S.nearby_buses_items_subtitles[index], name, BUFFER_MAX_LEN);
 
     layer_mark_dirty(simple_menu_layer_get_layer(S.menu_layer));
 }

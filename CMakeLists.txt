@@ -11,6 +11,7 @@ set(SOURCE_FILES
     src/main.c
     src/nearby_buses.c
     src/nearby_stops.c
+    src/bus_detail.c
     )
 
 add_executable(PebbleGRT ${SOURCE_FILES})
