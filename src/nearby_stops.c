@@ -94,6 +94,8 @@ void nearby_stops_app_message_received(DictionaryIterator *iterator, void *conte
     strncpy(S.nearby_stops_items_subtitles[index], name, NEARBY_STOP_TITLE_MAX_LEN);
 
     layer_mark_dirty(simple_menu_layer_get_layer(S.menu_layer));
+
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "Nearby stop: i=%li, name='%s', distance='%s'", index, name, distance);
 }
 
 
