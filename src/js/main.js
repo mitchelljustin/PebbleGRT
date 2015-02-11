@@ -113,6 +113,7 @@ function nearbyStops() {
             json = messages[index];
             sendJsonToPebble(json, pebbleAckCallback);
         }
+        pebbleAckCallback();
     });
 }
 
