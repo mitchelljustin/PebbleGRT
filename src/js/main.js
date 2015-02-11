@@ -121,6 +121,7 @@ Pebble.addEventListener('appmessage',
             case PGTypeNearbyStops:
                 var index = data["PGKeyStopIndex"];
                 console.log("Got request for stop at index " + index);
+                console.log("saved_stops.length = " + (saved_stops == null ? -1 : saved_stops.length));
                 if (saved_stops == null) {
                     nearbyStops();
                 } else if (index < saved_stops.length - 1) {
