@@ -103,14 +103,14 @@ function nearbyStops() {
             };
             messages.push(msg);
         }
-        index = -1;
+        index = 0;
         var json = null;
         function pebbleAckCallback() {
-            index += 1;
             if (index == messages.length) {
                 return;
             }
             json = messages[index];
+            index += 1;
             sendJsonToPebble(json, pebbleAckCallback);
         }
         pebbleAckCallback();
