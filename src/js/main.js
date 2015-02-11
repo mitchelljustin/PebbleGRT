@@ -100,7 +100,7 @@ function nearbyStops() {
             };
             saved_stops.push(msg);
         }
-        sendStopAtIndexToPebble(0);
+        sendJsonToPebble(msg);
     })
 }
 
@@ -120,6 +120,7 @@ Pebble.addEventListener('appmessage',
                 break;
             case PGTypeNearbyStops:
                 var index = data["PGKeyStopIndex"];
+                console.log("Got request for stop at index " + index);
                 if (saved_stops == null) {
                     nearbyStops();
                 } else if (index < saved_stops.length - 1) {
