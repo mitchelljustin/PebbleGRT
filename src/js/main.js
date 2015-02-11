@@ -45,6 +45,7 @@ function sendJsonToPebble(json, callback) {
 
 function nearbyBuses() {
     function closeBusesCallback(buses) {
+        var messages = [];
         for (var index = 0; index < buses.length; index++) {
             var bus = buses[index];
             var name = bus.description;
@@ -55,8 +56,9 @@ function nearbyBuses() {
                 "PGKeyBusDistance": distance,
                 "PGKeyBusIndex": index
             };
-            sendJsonToPebble(msg);
+            messages.push(msg);
         }
+        sendPiecewiseMessages(messages);
     }
 
     getGeoLocation(function (loc) {
@@ -82,9 +84,18 @@ function busDetail(vehicleId, tripId) {
     });
 }
 
-function sendStopAtIndexToPebble(index) {
-    var stop = saved_stops[index];
-    sendJsonToPebble(stop);
+function sendPiecewiseMessages(messages) {
+    var index = 0;
+    var json = null;
+    function pebbleAckCallback() {
+        if (index == messages.length) {
+            return;
+        }
+        json = messages[index];
+        index += 1;
+        sendJsonToPebble(json, pebbleAckCallback);
+    }
+    pebbleAckCallback();
 }
 
 function nearbyStops() {
@@ -103,17 +114,7 @@ function nearbyStops() {
             };
             messages.push(msg);
         }
-        index = 0;
-        var json = null;
-        function pebbleAckCallback() {
-            if (index == messages.length) {
-                return;
-            }
-            json = messages[index];
-            index += 1;
-            sendJsonToPebble(json, pebbleAckCallback);
-        }
-        pebbleAckCallback();
+        sendPiecewiseMessages(messages);
     });
 }
 
