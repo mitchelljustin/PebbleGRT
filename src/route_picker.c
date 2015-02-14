@@ -9,7 +9,7 @@
 
 #define NUM_SECTIONS 2
 
-#define BUFFER_MAX_LEN 128
+#define TITLE_BUFFER_MAX_LEN 128
 
 #define LOADING_STRING "Loading.."
 
@@ -26,8 +26,8 @@ static struct {
     char trip_id[40];
     char vehicle_id[40];
 
-    char stop_buffers[BUFFER_MAX_LEN][NUM_STOP_MENU_ITEMS];
-    char delay_subtitle_buf[BUFFER_MAX_LEN];
+    char stop_buffers[TITLE_BUFFER_MAX_LEN][NUM_STOP_MENU_ITEMS];
+    char delay_subtitle_buf[TITLE_BUFFER_MAX_LEN];
 } S;
 
 static void send_phone_message_route_picker();
@@ -46,8 +46,8 @@ static void send_phone_message_route_picker() {
     app_message_outbox_begin(&iter);
 
     dict_write_uint8(iter, PGKeyMessageType, (uint8_t) MessageTypeBusDetail);
-    dict_write_cstring(iter, PGKeyBusDetailTripId, S.trip_id);
-    dict_write_cstring(iter, PGKeyBusDetailVehicleId, S.vehicle_id);
+    dict_write_cstring(iter, PGKeyBusTripId, S.trip_id);
+    dict_write_cstring(iter, PGKeyBusVehicleId, S.vehicle_id);
 
     app_message_outbox_send();
 }

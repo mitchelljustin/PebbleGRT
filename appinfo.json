@@ -5,16 +5,17 @@
     "PGKeyBusName": 1,
     "PGKeyBusDistance": 2,
     "PGKeyBusIndex": 3,
+    "PGKeyBusVehicleId": 4,
+    "PGKeyBusTripId": 5,
 
-    "PGKeyStopName": 1,
-    "PGKeyStopDistance": 2,
-    "PGKeyStopIndex": 3,
+    "PGKeyStopName": 6,
+    "PGKeyStopDistance": 7,
+    "PGKeyStopIndex": 8,
 
-    "PGKeyBusDetailVehicleId": 1,
-    "PGKeyBusDetailTripId": 2,
-    "PGKeyBusDetailDelay": 1,
-    "PGKeyBusDetailStopName": 1,
-    "PGKeyBusDetailStopTime": 2
+    "PGKeyBusDetailStopName": 9,
+    "PGKeyBusDetailStopTime": 10,
+    "PGKeyBusDetailDelay": 11,
+    "PGKeyBusDetailIndex": 12
   },
   "capabilities": [
     "location"

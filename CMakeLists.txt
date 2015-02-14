@@ -12,6 +12,8 @@ set(SOURCE_FILES
     src/nearby_buses.c
     src/nearby_stops.c
     src/bus_detail.c
+    src/route_picker.c
+    appinfo.json
     )
 
 add_executable(PebbleGRT ${SOURCE_FILES})

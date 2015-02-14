@@ -103,12 +103,14 @@ GRT.getBusInfo = function (loc, vehicleId, tripId, callback) {
             var nextStop = stops[0];
             var delayTotalSeconds = nextStop["Delay"] * -2;
             var delayString = makeDelayString(delayTotalSeconds);
+            var index = 0;
             var stopsForPebble = stops.map(function (stop) {
                 var minutes = stop["Minutes"] + Math.floor(delayTotalSeconds / 60);
                 var stopName = stop["Name"];
                 return {
                     "PGKeyBusDetailStopName": stopName,
-                    "PGKeyBusDetailStopTime": makeMinutesString(minutes)
+                    "PGKeyBusDetailStopTime": makeMinutesString(minutes),
+                    "PGKeyBusDetailIndex": index++
                 };
             });
             callback({

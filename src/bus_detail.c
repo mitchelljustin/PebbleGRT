@@ -9,9 +9,15 @@
 
 #define NUM_SECTIONS 2
 
-#define BUFFER_MAX_LEN 128
+#define ID_BUFFER_MAX_LEN 40
+#define TITLE_BUFFER_MAX_LEN 128
 
 #define LOADING_STRING "Loading.."
+
+struct stop_s {
+    char name[TITLE_BUFFER_MAX_LEN];
+    char time[TITLE_BUFFER_MAX_LEN];
+};
 
 static struct {
     Window *window;
@@ -23,19 +29,61 @@ static struct {
     SimpleMenuSection stop_menu_section;
     SimpleMenuSection menu_sections[NUM_SECTIONS];
     
-    char trip_id[40];
-    char vehicle_id[40];
-
-    char stop_buffers[BUFFER_MAX_LEN][NUM_STOP_MENU_ITEMS];
-    char delay_subtitle_buf[BUFFER_MAX_LEN];
+    char trip_id[ID_BUFFER_MAX_LEN];
+    char vehicle_id[ID_BUFFER_MAX_LEN];
+    
+    struct stop_s stops[NUM_STOP_MENU_ITEMS];
+    
+    char delay_subtitle_buf[TITLE_BUFFER_MAX_LEN];
 } S;
 
 static void send_phone_message_bus_detail();
 
 static void bus_detail_window_load(Window *window) {
+    strncpy(S.delay_subtitle_buf, LOADING_STRING, TITLE_BUFFER_MAX_LEN);
+
+    for (int i = 0; i < NUM_STOP_MENU_ITEMS; ++i) {
+        struct stop_s *stop = &S.stops[i];
+        SimpleMenuItem *menu_item = &S.stop_menu_items[i];
+        menu_item->title = stop->time;
+        menu_item->subtitle = stop->name;
+        strncpy(stop->name, LOADING_STRING, TITLE_BUFFER_MAX_LEN);
+        stop->time[0] = '\0';
+    }
+
+    S.info_menu_items[0] = (SimpleMenuItem) {
+        .title = LOADING_STRING,
+        .subtitle = LOADING_STRING
+    };
+    S.info_menu_items[1] = (SimpleMenuItem) {
+        .title = "Delay",
+        .subtitle = S.delay_subtitle_buf
+    };
+
+    S.info_menu_section = (SimpleMenuSection) {
+        .title = "Bus Detail",
+        .num_items = NUM_INFO_MENU_ITEMS,
+        .items = S.info_menu_items
+    };
+
+    S.stop_menu_section = (SimpleMenuSection) {
+        .title = "Upcoming Stops",
+        .num_items = NUM_STOP_MENU_ITEMS,
+        .items = S.stop_menu_items
+    };
+
+    S.menu_sections[0] = S.info_menu_section;
+    S.menu_sections[1] = S.stop_menu_section;
+
     Layer *window_layer = window_get_root_layer(window);
     GRect window_bounds = layer_get_bounds(window_layer);
-    
+
+    S.menu_layer = simple_menu_layer_create(window_bounds,
+        window,
+        S.menu_sections,
+        NUM_SECTIONS,
+        NULL);
+
     layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
 
     send_phone_message_bus_detail();
@@ -46,8 +94,8 @@ static void send_phone_message_bus_detail() {
     app_message_outbox_begin(&iter);
 
     dict_write_uint8(iter, PGKeyMessageType, (uint8_t) MessageTypeBusDetail);
-    dict_write_cstring(iter, PGKeyBusDetailTripId, S.trip_id);
-    dict_write_cstring(iter, PGKeyBusDetailVehicleId, S.vehicle_id);
+    dict_write_cstring(iter, PGKeyBusTripId, S.trip_id);
+    dict_write_cstring(iter, PGKeyBusVehicleId, S.vehicle_id);
 
     app_message_outbox_send();
 }
@@ -58,17 +106,49 @@ static void bus_detail_window_unload(Window *window) {
 }
 
 void bus_detail_app_message_received(DictionaryIterator *iterator, void *context) {
+    enum MessageType message_type = MessageTypeNone;
 
     int32_t index = 0;
+
+    char *stop_name_or_delay = NULL;
+    char *stop_time = NULL;
 
     Tuple *t = dict_read_first(iterator);
 
     while (t != NULL) {
         switch (t->key) {
+            case PGKeyMessageType:
+                message_type = (enum MessageType) t->value->uint8;
+            case PGKeyBusDetailStopName:
+                stop_name_or_delay = t->value->cstring;
+                break;
+            case PGKeyBusDetailDelay:
+                stop_name_or_delay = t->value->cstring;
+                break;
+            case PGKeyBusDetailStopTime:
+                stop_time = t->value->cstring;
+                break;
+            case PGKeyBusDetailIndex:
+                index = t->value->int32;
+                break;
             default:
                 break;
         }
         t = dict_read_next(iterator);
+    }
+
+    switch (message_type) {
+        case MessageTypeBusDetailDelay:
+            strncpy(S.delay_subtitle_buf, stop_name_or_delay, TITLE_BUFFER_MAX_LEN);
+            break;
+        case MessageTypeBusDetailStop: {
+            struct stop_s *stop = &S.stops[index];
+            strncpy(stop->name, stop_name_or_delay, TITLE_BUFFER_MAX_LEN);
+            strncpy(stop->time, stop_time, TITLE_BUFFER_MAX_LEN);
+            break;
+        }
+        default:
+            break;
     }
 
     layer_mark_dirty(simple_menu_layer_get_layer(S.menu_layer));
@@ -82,37 +162,8 @@ void push_bus_detail_window(char *trip_id, char *vehicle_id) {
         .unload = bus_detail_window_unload
     });
     
-    strncpy(S.trip_id, trip_id, 40); 
-    strncpy(S.vehicle_id, vehicle_id, 40);
-
-    strncpy(S.delay_subtitle_buf, LOADING_STRING, BUFFER_MAX_LEN);
-
-    for (int i = 0; i < NUM_STOP_MENU_ITEMS; ++i) {
-        (&S.stop_menu_items[i])->title = LOADING_STRING;
-    }
-
-    S.info_menu_items[0] = (SimpleMenuItem) {
-        .title = LOADING_STRING,
-        .subtitle = LOADING_STRING
-    };
-    S.info_menu_items[1] = (SimpleMenuItem) {
-        .title = "Delay",
-        .subtitle = S.delay_subtitle_buf
-    };
-
-    S.menu_sections[0] = S.info_menu_section;
-    S.menu_sections[1] = S.stop_menu_section;
-
-    Layer *window_layer = window_get_root_layer(S.window);
-    GRect window_bounds = layer_get_bounds(window_layer);
-
-    S.menu_layer = simple_menu_layer_create(window_bounds,
-        S.window,
-        S.menu_sections,
-        NUM_SECTIONS,
-        NULL);
-
-    layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
+    strncpy(S.trip_id, trip_id, ID_BUFFER_MAX_LEN);
+    strncpy(S.vehicle_id, vehicle_id, ID_BUFFER_MAX_LEN);
 
     app_message_register_inbox_received(bus_detail_app_message_received);
 

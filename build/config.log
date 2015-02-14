@@ -1,4 +1,4 @@
-# project  configured on Mon Feb  9 14:26:01 2015 by
+# project  configured on Sat Feb 14 12:12:59 2015 by
 # waf 1.7.11 (abi 98, python 20708f0 on darwin)
 # using /Users/mitch/pebble-dev/PebbleSDK-2.7/Pebble/waf configure build
 #
@@ -7,7 +7,7 @@ Setting top to
 /Users/mitch/dev/pebble/PebbleGRT
 ----------------------------------------
 Setting out to
-/Users/mitch/Dev/pebble/PebbleGRT/build
+/Users/mitch/dev/pebble/PebbleGRT/build
 ----------------------------------------
 Checking for program gcc,cc
 arm-none-eabi-gcc

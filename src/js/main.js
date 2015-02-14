@@ -70,7 +70,9 @@ function nearbyBuses() {
                 "PGKeyMessageType": PGTypeNearbyBuses,
                 "PGKeyBusName": name,
                 "PGKeyBusDistance": distance,
-                "PGKeyBusIndex": index
+                "PGKeyBusIndex": index,
+                "PGKeyBusTripId": bus.tripId,
+                "PGKeyBusVehicleId": bus.vehicleId
             };
             messages.push(msg);
         }
@@ -134,8 +136,8 @@ Pebble.addEventListener('appmessage',
                 nearbyBuses();
                 break;
             case PGTypeBusDetail:
-                var vehicleId = data["PGKeyBusDetailVehicleId"];
-                var tripId = data["PGKeyBusDetailTripId"];
+                var vehicleId = data["PGKeyBusVehicleId"];
+                var tripId = data["PGKeyBusTripId"];
                 busDetail(vehicleId, tripId);
                 break;
             case PGTypeNearbyStops:
