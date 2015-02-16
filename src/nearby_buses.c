@@ -3,7 +3,7 @@
 #include "defines.h"
 #include "bus_detail.h"
 
-#define NUM_BUSES 10
+#define NUM_BUSES 7
 
 #define TITLE_BUFFER_MAX_LEN 128
 

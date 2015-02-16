@@ -16,11 +16,12 @@ struct stop_s {
 static struct {
     Window *window;
     SimpleMenuLayer *menu_layer;
-    SimpleMenuSection stop_info_menu_section;
+    SimpleMenuSection stop_info_menu_sections[2];
+    SimpleMenuItem header_menu_item;
     SimpleMenuItem stop_menu_items[NUM_STOP_MENU_ITEMS];
 
-    char bus_title[TITLE_BUFFER_MAX_LEN];
-    char bus_subtitle[TITLE_BUFFER_MAX_LEN];
+    char stop_title[TITLE_BUFFER_MAX_LEN];
+    char stop_subtitle[TITLE_BUFFER_MAX_LEN];
 
     stop_id_t stop_id;
     route_id_t route_id;
@@ -41,7 +42,18 @@ static void stop_info_window_load(Window *window) {
         stop->name[0] = '\0';
     }
 
-    S.stop_info_menu_section = (SimpleMenuSection) {
+    S.header_menu_item = (SimpleMenuItem) {
+        .title = S.stop_title,
+        .subtitle = S.stop_subtitle
+    };
+
+    S.stop_info_menu_sections[0] = (SimpleMenuSection) {
+        .title = "Stop Info",
+        .items = &S.header_menu_item,
+        .num_items = 1
+    };
+
+    S.stop_info_menu_sections[1] = (SimpleMenuSection) {
         .title = "Upcoming Buses",
         .items = S.stop_menu_items,
         .num_items = NUM_STOP_MENU_ITEMS
@@ -52,8 +64,8 @@ static void stop_info_window_load(Window *window) {
 
     S.menu_layer = simple_menu_layer_create(window_bounds,
         window,
-        &S.stop_info_menu_section,
-        1,
+        S.stop_info_menu_sections,
+        2,
         NULL);
 
     layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
@@ -111,7 +123,7 @@ void stop_info_app_message_received(DictionaryIterator *iterator, void *context)
     layer_mark_dirty(simple_menu_layer_get_layer(S.menu_layer));
 }
 
-void push_stop_info_window(stop_id_t stop_id, route_id_t route_id) {
+void push_stop_info_window(stop_id_t stop_id, route_id_t route_id, char *stop_name) {
 
     APP_LOG(APP_LOG_LEVEL_DEBUG, "stop info: stop_id = %li, route_id = %li", stop_id, route_id);
     S.window = window_create();
@@ -123,6 +135,9 @@ void push_stop_info_window(stop_id_t stop_id, route_id_t route_id) {
 
     S.stop_id = stop_id;
     S.route_id = route_id;
+
+    snprintf(S.stop_title, TITLE_BUFFER_MAX_LEN, "%li", stop_id);
+    strncpy(S.stop_subtitle, stop_name, TITLE_BUFFER_MAX_LEN);
 
     app_message_register_inbox_received(stop_info_app_message_received);
 

@@ -43,6 +43,13 @@ function sendPiecewiseMessages(messages) {
     pebbleAckCallback();
 }
 
+function makeDistanceString(distance) {
+    if (distance >= 1.0) {
+        return distance + "km"
+    }
+    return distance * 1000 + "m"
+}
+
 function sendJsonToPebble(json, callback) {
     var string = JSON.stringify(json);
     console.log("Sending message to Pebble: " + string);
@@ -66,7 +73,7 @@ function nearbyBuses() {
         for (var index = 0; index < buses.length; index++) {
             var bus = buses[index];
             var name = bus.description;
-            var distance = bus.distance + "km";
+            var distance = makeDistanceString(bus.distance);
             var msg = {
                 "PGKeyMessageType": MessageTypeNearbyBuses,
                 "PGKeyBusName": name,
@@ -113,8 +120,8 @@ function nearbyStops() {
         var stops = GRT.findNearbyStops(loc);
         for (var index = 0; index < stops.length; index++) {
             var stop = stops[index];
-            var description = stop.name + " (" + stop.id + ")";
-            var distance = stop.distance + "km";
+            var description = stop.name;
+            var distance = makeDistanceString(stop.distance);
             var msg = {
                 "PGKeyMessageType": MessageTypeNearbyStops,
                 "PGKeyStopName": description,
