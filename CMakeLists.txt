@@ -13,6 +13,7 @@ set(SOURCE_FILES
     src/nearby_stops.c
     src/bus_detail.c
     src/route_picker.c
+    src/stop_info.c
     appinfo.json
     )
 

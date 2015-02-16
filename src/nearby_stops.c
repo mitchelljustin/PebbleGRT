@@ -1,7 +1,8 @@
 #include <pebble.h>
 #include "nearby_stops.h"
-#include "message_types.h"
+#include "defines.h"
 #include "route_picker.h"
+#include "stop_info.h"
 
 #define NUM_STOPS 10
 
@@ -34,10 +35,13 @@ static void send_phone_message_nearby_stops() {
 }
 
 static void route_picker_returned(route_id_t route_id) {
-
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "route id picked: %li", route_id);
+    stop_id_t stop_id = S.nearby_stops[S.nearby_stop_selected_index].stop_id;
+    push_stop_info_window(stop_id, route_id);
 }
 
 static void nearby_stop_selected(int index, void *context) {
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "stop selected at index: %i", index);
     S.nearby_stop_selected_index = index;
     push_route_picker_window(route_picker_returned);
 }

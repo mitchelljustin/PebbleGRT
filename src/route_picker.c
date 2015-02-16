@@ -16,18 +16,19 @@ static struct {
 
 static void route_selected_callback(int index, void *context) {
     route_id_t route_id = AVAILABLE_ROUTES[index];
+    window_stack_pop(false);
     S.callback(route_id);
     S.callback = NULL;
-    window_stack_pop(true);
 }
 
 static void route_picker_window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     GRect window_bounds = layer_get_bounds(window_layer);
 
-    for (int i = 0; i < NUM_ROUTES; ++i) {
+    for (unsigned int i = 0; i < NUM_ROUTES; ++i) {
         S.route_items[i] = (SimpleMenuItem) {
-            .title = AVAILABLE_ROUTE_NAMES[i],
+            .title = AVAILABLE_ROUTE_ID_STRINGS[i],
+            .subtitle = AVAILABLE_ROUTE_NAME_STRINGS[i],
             .callback = route_selected_callback
         };
     }

@@ -1,6 +1,6 @@
 #include <pebble.h>
 #include "bus_detail.h"
-#include "message_types.h"
+#include "defines.h"
 
 #define NUM_BUSES 10
 

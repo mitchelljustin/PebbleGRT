@@ -65,31 +65,21 @@ GRT.findNearbyBuses = function (loc, callback) {
     request.send();
 };
 
-GRT.getBusInfo = function (loc, vehicleId, tripId, callback) {
-    function makeDelayString(delayTotalSeconds) {
-        var delayMinutes = Math.floor(delayTotalSeconds / 60);
-        var delaySeconds = Math.round(((delayTotalSeconds / 60) - delayMinutes) * 60);
-        var delayString = "";
-        if (delayMinutes.length != 0) {
-            delayString += delayMinutes + "m "
-        }
-        delayString += delaySeconds + "s";
-        return delayString;
+function makeMinutesString(minutes) {
+    var minString;
+    if (minutes == 0) {
+        minString = "< 1 minute"
+    } else if (minutes == 1) {
+        minString = "1 minute"
+    } else if (minutes < 0) {
+        minString = "past"
+    } else {
+        minString = minutes + " minutes"
     }
+    return minString;
+}
 
-    function makeMinutesString(minutes) {
-        var minString;
-        if (minutes == 0) {
-            minString = "< 1 minute"
-        } else if (minutes == 1) {
-            minString = "1 minute"
-        } else if (minutes < 0) {
-            minString = "past"
-        } else {
-            minString = minutes + " minutes"
-        }
-        return minString;
-    }
+GRT.getBusInfo = function (loc, vehicleId, tripId, callback) {
 
     var request = new XMLHttpRequest();
     var url = "http://realtimemap.grt.ca/Stop/GetBusInfo?" +
@@ -131,4 +121,46 @@ GRT.getBusInfo = function (loc, vehicleId, tripId, callback) {
         }
     };
     request.send();
+};
+
+GRT.getStopInfo = function(stopId, routeId, callback) {
+    var request = new XMLHttpRequest();
+    var url = "http://realtimemap.grt.ca/Stop/GetStopInfo?" +
+        "stopId=" + encodeURIComponent(stopId) +
+        "&routeId=" + encodeURIComponent(routeId);
+    console.log("GET " + url);
+    request.open("GET", url);
+    request.setRequestHeader("Referer", "http://realtimemap.grt.ca/Map");
+    request.onload = function () {
+        if (request.status == 200) {
+            var json = JSON.parse(request.responseText);
+            var buses = json["stopTimes"];
+            var index = 0;
+
+            if (buses.length != 0) {
+                buses = buses.map(function (bus) {
+                    var minutes = bus["Minutes"];
+                    var stopName = bus["HeadSign"];
+                    return {
+                        "PGKeyStopInfoStopName": stopName,
+                        "PGKeyStopInfoStopTime": makeMinutesString(minutes),
+                        "PGKeyStopInfoIndex": index++
+                    };
+                });
+            } else {
+                buses = [null, null, null].map(function(n) {
+                    return {
+                        "PGKeyStopInfoStopName": "N/A",
+                        "PGKeyStopInfoStopTime": "N/A",
+                        "PGKeyStopInfoIndex": index++
+                    };
+                });
+            }
+            callback(buses);
+        } else {
+            console.log("Error with request: " + request.statusText);
+        }
+    };
+    request.send();
+
 };

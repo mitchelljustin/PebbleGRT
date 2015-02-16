@@ -1,6 +1,6 @@
 #include <pebble.h>
 #include "nearby_buses.h"
-#include "message_types.h"
+#include "defines.h"
 #include "bus_detail.h"
 
 #define NUM_BUSES 10
@@ -52,6 +52,9 @@ void nearby_buses_app_message_received(DictionaryIterator *iterator, void *conte
     while (t != NULL) {
         switch (t->key) {
             case PGKeyMessageType:
+                if (t->value->uint8 != MessageTypeNearbyBuses) {
+                    return;
+                }
                 break;
             case PGKeyBusIndex:
                 index = t->value->uint32;
@@ -91,12 +94,9 @@ void nearby_buses_app_message_received(DictionaryIterator *iterator, void *conte
 }
 
 static void nearby_buses_window_appear(Window *window) {
-    app_message_register_inbox_received(nearby_buses_app_message_received);
-    send_phone_message_nearby_buses();
 }
 
 static void nearby_buses_window_disappear(Window *window) {
-    app_message_deregister_callbacks();
 }
 
 static void nearby_bus_selected_callback(int index, void *context) {
@@ -136,6 +136,8 @@ static void nearby_buses_window_load(Window *window) {
 
     layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
 
+    app_message_register_inbox_received(nearby_buses_app_message_received);
+
     send_phone_message_nearby_buses();
 }
 
@@ -156,6 +158,7 @@ void initialize_buses() {
 }
 
 static void nearby_buses_window_unload(Window *window) {
+    app_message_deregister_callbacks();
     simple_menu_layer_destroy(S.menu_layer);
 }
 

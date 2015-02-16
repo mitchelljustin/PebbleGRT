@@ -2,11 +2,12 @@
  * Created by mitch on 15-02-07.
  */
 
-var PGTypeNearbyBuses = 0;
-var PGTypeBusDetail = 1;
-var PGTypeNearbyStops = 2;
-var PGTypeBusDetailDelay = 3;
-var PGTypeBusDetailStop = 4;
+var MessageTypeNearbyBuses = 0;
+var MessageTypeBusDetail = 1;
+var MessageTypeNearbyStops = 2;
+var MessageTypeBusDetailDelay = 3;
+var MessageTypeBusDetailStop = 4;
+var MessageTypeStopInfo = 5;
 
 function getGeoLocation(onSuccess) {
     var locationOptions = {
@@ -67,7 +68,7 @@ function nearbyBuses() {
             var name = bus.description;
             var distance = bus.distance + "km";
             var msg = {
-                "PGKeyMessageType": PGTypeNearbyBuses,
+                "PGKeyMessageType": MessageTypeNearbyBuses,
                 "PGKeyBusName": name,
                 "PGKeyBusDistance": distance,
                 "PGKeyBusIndex": index,
@@ -90,11 +91,11 @@ function busDetail(vehicleId, tripId) {
     function busInfoCallback(info) {
         var messages = [
         {
-            "PGKeyMessageType": PGTypeBusDetailDelay,
+            "PGKeyMessageType": MessageTypeBusDetailDelay,
             "PGKeyBusDetailDelay": info.delay
         }];
         Array.prototype.push.apply(messages, info.stops.map(function (stop) {
-            stop["PGKeyMessageType"] = PGTypeBusDetailStop;
+            stop["PGKeyMessageType"] = MessageTypeBusDetailStop;
             return stop;
         }));
 
@@ -115,7 +116,7 @@ function nearbyStops() {
             var description = stop.name + " (" + stop.id + ")";
             var distance = stop.distance + "km";
             var msg = {
-                "PGKeyMessageType": PGTypeNearbyStops,
+                "PGKeyMessageType": MessageTypeNearbyStops,
                 "PGKeyStopName": description,
                 "PGKeyStopDistance": distance,
                 "PGKeyStopIndex": index,
@@ -127,23 +128,36 @@ function nearbyStops() {
     });
 }
 
+function stopInfo(stopId, routeId) {
+    GRT.getStopInfo(stopId, routeId, function(stops) {
+        stops.forEach(function(stop) {
+            stop["PGKeyMessageType"] = MessageTypeStopInfo;
+        });
+        sendPiecewiseMessages(stops);
+    });
+}
+
 Pebble.addEventListener('appmessage',
     function (e) {
         var data = e.payload;
         console.log("Received message from Pebble: " + JSON.stringify(data));
         var messageType = data["PGKeyMessageType"];
         switch (messageType) {
-            case PGTypeNearbyBuses:
+            case MessageTypeNearbyBuses:
                 nearbyBuses();
                 break;
-            case PGTypeBusDetail:
+            case MessageTypeBusDetail:
                 var vehicleId = data["PGKeyBusVehicleId"];
                 var tripId = data["PGKeyBusTripId"];
                 busDetail(vehicleId, tripId);
                 break;
-            case PGTypeNearbyStops:
+            case MessageTypeNearbyStops:
                 nearbyStops();
                 break;
+            case MessageTypeStopInfo:
+                var stopId = data["PGKeyStopId"];
+                var routeId = data["PGKeyRouteId"];
+                stopInfo(stopId, routeId);
         }
     }
 );
