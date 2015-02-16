@@ -11,6 +11,7 @@
 #define PGKeyBusDetailStopTime 10
 #define PGKeyBusDetailDelay 11
 #define PGKeyBusDetailIndex 12
+#define PGKeyStopId 13
 
 enum MessageType {
     MessageTypeNone = 9999,

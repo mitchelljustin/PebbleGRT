@@ -112,13 +112,14 @@ function nearbyStops() {
         var stops = GRT.findNearbyStops(loc);
         for (var index = 0; index < stops.length; index++) {
             var stop = stops[index];
-            var name = stop.name + " (" + stop.id + ")";
+            var description = stop.name + " (" + stop.id + ")";
             var distance = stop.distance + "km";
             var msg = {
                 "PGKeyMessageType": PGTypeNearbyStops,
-                "PGKeyStopName": name,
+                "PGKeyStopName": description,
                 "PGKeyStopDistance": distance,
-                "PGKeyStopIndex": index
+                "PGKeyStopIndex": index,
+                "PGKeyStopId": stop.id
             };
             messages.push(msg);
         }

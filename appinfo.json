@@ -15,7 +15,9 @@
     "PGKeyBusDetailStopName": 9,
     "PGKeyBusDetailStopTime": 10,
     "PGKeyBusDetailDelay": 11,
-    "PGKeyBusDetailIndex": 12
+    "PGKeyBusDetailIndex": 12,
+
+    "PGKeyStopId": 13
   },
   "capabilities": [
     "location"

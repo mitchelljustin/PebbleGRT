@@ -83,6 +83,8 @@ GRT.getBusInfo = function (loc, vehicleId, tripId, callback) {
             minString = "< 1 minute"
         } else if (minutes == 1) {
             minString = "1 minute"
+        } else if (minutes < 0) {
+            minString = "past"
         } else {
             minString = minutes + " minutes"
         }
@@ -101,11 +103,18 @@ GRT.getBusInfo = function (loc, vehicleId, tripId, callback) {
             var json = JSON.parse(request.responseText);
             var stops = json["stopTimes"];
             var nextStop = stops[0];
-            var delayTotalSeconds = nextStop["Delay"] * -2;
-            var delayString = makeDelayString(delayTotalSeconds);
+            var minutes = nextStop["Minutes"];
+            var delayString;
+            if (minutes < 0) {
+                var delay = (-minutes);
+                delayString = "" + delay + " minute" + ((delay == 1) ? "" : "s");
+            } else {
+                delayString = "None"
+            }
+
             var index = 0;
             var stopsForPebble = stops.map(function (stop) {
-                var minutes = stop["Minutes"] + Math.floor(delayTotalSeconds / 60);
+                var minutes = stop["Minutes"];
                 var stopName = stop["Name"];
                 return {
                     "PGKeyBusDetailStopName": stopName,

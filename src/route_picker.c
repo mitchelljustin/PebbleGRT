@@ -1,93 +1,65 @@
 #include <pebble.h>
 #include "route_picker.h"
-#include "message_types.h"
 
-#define NUM_BUSES 10
-
-#define NUM_INFO_MENU_ITEMS 2
-#define NUM_STOP_MENU_ITEMS 3
-
-#define NUM_SECTIONS 2
-
-#define TITLE_BUFFER_MAX_LEN 128
-
-#define LOADING_STRING "Loading.."
+#define NUM_ROUTES ARRAY_LENGTH(AVAILABLE_ROUTES)
 
 static struct {
     Window *window;
+    void (*callback)(int32_t);
+
     SimpleMenuLayer *menu_layer;
     SimpleMenuSection route_picker_menu_section;
-    SimpleMenuItem info_menu_items[NUM_INFO_MENU_ITEMS];
-    SimpleMenuItem stop_menu_items[NUM_STOP_MENU_ITEMS];
-    SimpleMenuSection info_menu_section;
-    SimpleMenuSection stop_menu_section;
-    SimpleMenuSection menu_sections[NUM_SECTIONS];
     
-    char trip_id[40];
-    char vehicle_id[40];
-
-    char stop_buffers[TITLE_BUFFER_MAX_LEN][NUM_STOP_MENU_ITEMS];
-    char delay_subtitle_buf[TITLE_BUFFER_MAX_LEN];
+    SimpleMenuItem route_items[NUM_ROUTES];
 } S;
 
-static void send_phone_message_route_picker();
+
+static void route_selected_callback(int index, void *context) {
+    route_id_t route_id = AVAILABLE_ROUTES[index];
+    S.callback(route_id);
+    S.callback = NULL;
+    window_stack_pop(true);
+}
 
 static void route_picker_window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     GRect window_bounds = layer_get_bounds(window_layer);
-    
+
+    for (int i = 0; i < NUM_ROUTES; ++i) {
+        S.route_items[i] = (SimpleMenuItem) {
+            .title = AVAILABLE_ROUTE_NAMES[i],
+            .callback = route_selected_callback
+        };
+    }
+
+    S.route_picker_menu_section = (SimpleMenuSection) {
+        .title = "Choose a Route",
+        .num_items = NUM_ROUTES,
+        .items = S.route_items
+    };
+
+    S.menu_layer = simple_menu_layer_create(
+        window_bounds,
+        window,
+        &S.route_picker_menu_section,
+        1,
+        NULL);
+
     layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
-
-    send_phone_message_route_picker();
-}
-
-static void send_phone_message_route_picker() {
-    DictionaryIterator *iter;
-    app_message_outbox_begin(&iter);
-
-    dict_write_uint8(iter, PGKeyMessageType, (uint8_t) MessageTypeBusDetail);
-    dict_write_cstring(iter, PGKeyBusTripId, S.trip_id);
-    dict_write_cstring(iter, PGKeyBusVehicleId, S.vehicle_id);
-
-    app_message_outbox_send();
 }
 
 static void route_picker_window_unload(Window *window) {
-    app_message_deregister_callbacks();
     simple_menu_layer_destroy(S.menu_layer);
-}
-
-void route_picker_app_message_received(DictionaryIterator *iterator, void *context) {
-
-    int32_t index = 0;
-
-    Tuple *t = dict_read_first(iterator);
-
-    while (t != NULL) {
-        switch (t->key) {
-            default:
-                break;
-        }
-        t = dict_read_next(iterator);
-    }
-
-    layer_mark_dirty(simple_menu_layer_get_layer(S.menu_layer));
 }
 
 void push_route_picker_window(void (*callback)(int32_t)) {
     S.window = window_create();
+    S.callback = callback;
 
     window_set_window_handlers(S.window, (WindowHandlers) {
         .load = route_picker_window_load,
         .unload = route_picker_window_unload
     });
-
-    Layer *window_layer = window_get_root_layer(S.window);
-    GRect window_bounds = layer_get_bounds(window_layer);
-
-    layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
-
-    app_message_register_inbox_received(route_picker_app_message_received);
 
     window_stack_push(S.window, true);
 }

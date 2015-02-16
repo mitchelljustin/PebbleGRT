@@ -28,7 +28,10 @@ static struct {
     SimpleMenuSection info_menu_section;
     SimpleMenuSection stop_menu_section;
     SimpleMenuSection menu_sections[NUM_SECTIONS];
-    
+
+    char bus_title[TITLE_BUFFER_MAX_LEN];
+    char bus_subtitle[TITLE_BUFFER_MAX_LEN];
+
     char trip_id[ID_BUFFER_MAX_LEN];
     char vehicle_id[ID_BUFFER_MAX_LEN];
     
@@ -47,13 +50,13 @@ static void bus_detail_window_load(Window *window) {
         SimpleMenuItem *menu_item = &S.stop_menu_items[i];
         menu_item->title = stop->time;
         menu_item->subtitle = stop->name;
-        strncpy(stop->name, LOADING_STRING, TITLE_BUFFER_MAX_LEN);
-        stop->time[0] = '\0';
+        strncpy(stop->time, LOADING_STRING, TITLE_BUFFER_MAX_LEN);
+        stop->name[0] = '\0';
     }
 
     S.info_menu_items[0] = (SimpleMenuItem) {
-        .title = LOADING_STRING,
-        .subtitle = LOADING_STRING
+        .title = S.bus_title,
+        .subtitle = S.bus_subtitle
     };
     S.info_menu_items[1] = (SimpleMenuItem) {
         .title = "Delay",
@@ -154,16 +157,18 @@ void bus_detail_app_message_received(DictionaryIterator *iterator, void *context
     layer_mark_dirty(simple_menu_layer_get_layer(S.menu_layer));
 }
 
-void push_bus_detail_window(char *trip_id, char *vehicle_id) {
+void push_bus_detail_window(char trip_id[], char vehicle_id[], char title[], char subtitle[]) {
     S.window = window_create();
 
     window_set_window_handlers(S.window, (WindowHandlers) {
         .load = bus_detail_window_load,
         .unload = bus_detail_window_unload
     });
-    
+
     strncpy(S.trip_id, trip_id, ID_BUFFER_MAX_LEN);
     strncpy(S.vehicle_id, vehicle_id, ID_BUFFER_MAX_LEN);
+    strncpy(S.bus_title, title, TITLE_BUFFER_MAX_LEN);
+    strncpy(S.bus_subtitle, subtitle, TITLE_BUFFER_MAX_LEN);
 
     app_message_register_inbox_received(bus_detail_app_message_received);
 
