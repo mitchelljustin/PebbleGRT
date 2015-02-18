@@ -6,7 +6,7 @@
 var stopsMaxDistance = 20; // Km
 var busesMaxDistance = 20; // Km
 
-var resultsCountLimit = 10;
+var resultsCountLimit = 7;
 
 var GRT = {};
 

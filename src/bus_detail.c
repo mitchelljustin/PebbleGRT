@@ -40,7 +40,14 @@ static struct {
     char delay_subtitle_buf[TITLE_BUFFER_MAX_LEN];
 } S;
 
+
 static void send_phone_message_bus_detail();
+
+static void bus_detail_timer(struct tm *tick_time, TimeUnits units_changed) {
+    if (tick_time->tm_sec % 30 == 0) {
+        send_phone_message_bus_detail();
+    }
+}
 
 static void bus_detail_window_load(Window *window) {
     strncpy(S.delay_subtitle_buf, LOADING_STRING, TITLE_BUFFER_MAX_LEN);
@@ -171,6 +178,8 @@ void push_bus_detail_window(char trip_id[], char vehicle_id[], char title[], cha
     strncpy(S.bus_subtitle, subtitle, TITLE_BUFFER_MAX_LEN);
 
     app_message_register_inbox_received(bus_detail_app_message_received);
+
+    tick_timer_service_subscribe(SECOND_UNIT, bus_detail_timer);
 
     window_stack_push(S.window, true);
 }

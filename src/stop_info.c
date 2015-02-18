@@ -31,6 +31,12 @@ static struct {
 
 static void send_phone_message_stop_info();
 
+static void stop_info_timer(struct tm *tick_time, TimeUnits units_changed) {
+    if (tick_time->tm_sec % 30 == 0) {
+        send_phone_message_stop_info();
+    }
+}
+
 static void stop_info_window_load(Window *window) {
 
     for (int i = 0; i < NUM_STOP_MENU_ITEMS; ++i) {
@@ -69,6 +75,8 @@ static void stop_info_window_load(Window *window) {
         NULL);
 
     layer_add_child(window_layer, simple_menu_layer_get_layer(S.menu_layer));
+
+    tick_timer_service_subscribe(SECOND_UNIT, stop_info_timer);
 
     send_phone_message_stop_info();
 }
